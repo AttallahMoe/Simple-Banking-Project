@@ -1,19 +1,20 @@
 /* design intentionally made horrible to see who doesn't change it*/
 body {
+    background-image: linear-gradient(to bottom right, #9999ff , #ff4dd2);
     font-family: system;
     font-size: 1.5em;
 }
 
 ul[class="nav"]{
     list-style-type: none;
+    text-align:center;
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #026e02;
 }
 
 .nav > li {
-    float: left;
+    display:inline-block;
 }
 
 .nav > li a {
@@ -25,51 +26,42 @@ ul[class="nav"]{
 }
 
 .nav > li a:hover {
-    background-color: #39ca40;
+    background-color: #9933ff;
 }
 
 input, select {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
+    width = 320px;
+    padding: 10px;
+    margin: 20px auto;
     display: inline-block;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
 }
 
+
 input[type=submit] {
-    width: 100%;
-    background-color: #026e02;
+    width: 120px;
+    background-color: purple;
     color: white;
     padding: 14px 20px;
-    margin: 8px 0;
+    margin: 8px 25%;
     border: none;
-    border-radius: 4px;
     cursor: pointer;
 }
 
-input:nth-of-type(1) {
-    margin-left: 5px !important;
-    margin-right: 5px !important;
+form {
+     margin: 20px auto;
+     width: 320px;
 }
 
-input:nth-of-type(2) {
-    margin-left: 10px !important;
-    margin-right: 10px !important;
-}
+input {
+      padding: 10px;
+      font-size: inherit;
 
-input:nth-of-type(3) {
-    margin-left: 15px !important;
-    margin-right: 15px !important;
-}
-
-input:nth-of-type(4) {
-    margin-left: 20px !important;
-    margin-right: 20px !important;
-}
-
-input:nth-of-type(5) {
-    margin-left: 25px !important;
-    margin-right: 25px !important;
+input[type="text"] {
+     display: block;
+     margin-bottom: 25px;
+     width: 100%;
+     border-bottom: 2px solid purple; 
 }

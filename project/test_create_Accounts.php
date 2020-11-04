@@ -1,7 +1,7 @@
 <?php require_once(__DIR__ . "/partials/nav.php"); ?>
 
 <?php
-if(!has_roles("Admin")){
+if(!has_role("Admin")){
 	flash("You don't have permission to access this page");
 	die(header("Location: login.php"));
 }
@@ -17,7 +17,7 @@ if(!has_roles("Admin")){
 				<option value="3">Loan</option>
 		</select>
 		<input type="number" value="balance" placeholder="Balance"/>
-		<input type="submit" name="save" value="Update"/>
+		<input type="submit" name="save" value="Create"/>
 </form>		
 
 if(isset($_POST["save"])){
@@ -26,7 +26,7 @@ if(isset($_POST["save"])){
 	$balance = $_POST["balance"];
 	$user = get_user_id();
 	$db = getDB;
-	$stmt = $db->prepare("UPDATE Accounts set account_number=:account_number, account_type=:account_type, balance=:balance, user_id=:user where id=:id);
+	$stmt = $db->prepare("INSERT INTO Accounts (account_number, account_type, balance, user_id) VALUES(:account_number, :account_type, :balance, :user)");
 	$r = $stmt->execute([
 		":account_number"=>$account_number,
 		":account_type"=>$account_type,
@@ -44,4 +44,4 @@ if(isset($_POST["save"])){
 }
 
 ?>
-<?php require(__DIR__ . "/partials/flash.php");
+<?php require(__DIR__ . "/partials/flash.php");?>

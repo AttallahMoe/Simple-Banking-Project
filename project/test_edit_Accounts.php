@@ -21,12 +21,11 @@ if(isset($_POST["save"])){
 	$user = get_user_id();
 	$db = getDB();
 	if(isset($id)){
-		$stmt = db->prepare("UPDATE Accounts set account_number=:account_number, account_type=:account_type, balance=:balance, user=:user_id where id=:id");
+		$stmt = $db->prepare("UPDATE Accounts set account_number=:account_number, account_type=:account_type, balance=:balance where id=:id");
 		$r = $stmt->execute([
                 	":account_number"=>$account_number,
                 	":account_type"=>$account_type,
                 	":balance"=>$balance,
-                	":user_id"=>$user,
                 	":id"=>$id
        		]);
 			

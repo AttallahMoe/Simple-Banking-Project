@@ -16,23 +16,24 @@ if(!has_role("Admin")){
 				<option value="1">Saving</option>
 				<option value="3">Loan</option>
 		</select>
-		<input type="number" value="balance" placeholder="Balance"/>
+		<input type="number" name="balance" value="balance" placeholder="Balance"/>
 		<input type="submit" name="save" value="Create"/>
-</form>		
-
+</form>
+		
+<?php
 if(isset($_POST["save"])){
 	$account_number = $_POST["account_number"];
 	$account_type = $_POST["account_type"];
 	$balance = $_POST["balance"];
 	$user = get_user_id();
-	$db = getDB;
+	$db = getDB();
 	$stmt = $db->prepare("INSERT INTO Accounts (account_number, account_type, balance, user_id) VALUES(:account_number, :account_type, :balance, :user)");
 	$r = $stmt->execute([
 		":account_number"=>$account_number,
 		":account_type"=>$account_type,
-		":balance"=$balance,
-		":user_id"=$user, 
-		":id"=>$id
+		":balance"=>$balance,
+		":user"=>$user, 
+	//	":id"=>$id
 	]);
 	if($r){
 		flash("Created successfully with id: " . $db->lastInsertId());

@@ -59,9 +59,9 @@ if(isset($id)){
                 <input name="account_number" placeholder="Account Number" value="<?php echo $result["account_number"];?>"/>
                 <label>Account Type</label>
                 <select name="account_type" value="<?php echo $result["account_type"];?>">
-                                <option value="checking" <?php echo ($result["account_type"] == "checking"?'selected="selected"':'');?>>Checking</option>
-                                <option value="savings" <?php echo ($result["account_type"] == "saving"?'selected="selected"':'');?>>Savings</option>
-                                <option value="loan" <?php echo ($result["account_type"] == "loan"?'selected="selected"':'');?>>Loan</option>
+                                <option value="0" <?php echo ($result["account_type"] == "0"?'selected="selected"':'');?>>Checking</option>
+                                <option value="1" <?php echo ($result["account_type"] == "1"?'selected="selected"':'');?>>Savings</option>
+                                <option value="2" <?php echo ($result["account_type"] == "2"?'selected="selected"':'');?>>Loan</option>
                 </select>
                 <input type="number" name="balance" value="<?php echo $result["balance"];?>" placeholder="Balance"/>
                 <input type="submit" name="save" value="Update"/>

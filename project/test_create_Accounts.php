@@ -14,7 +14,7 @@ if(!has_role("Admin")){
 		<select name="account_type">
 				<option value="0">Checking</option>
 				<option value="1">Saving</option>
-				<option value="3">Loan</option>
+				<option value="2">Loan</option>
 		</select>
 		<input type="number" name="balance" value="balance" placeholder="Balance"/>
 		<input type="submit" name="save" value="Create"/>

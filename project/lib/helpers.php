@@ -68,4 +68,26 @@ function getMessages() {
     return array();
 }
 
+function getAccount()
+{
+    switch ($n) {
+        case "checking":
+            echo "Checking";
+            break;
+        case "saving":
+            echo "Saving";
+            break;
+        case "loan":
+            echo "Loan";
+            break;
+        case "world":
+            echo "World";
+            break;
+        default:
+            echo "Unsupported state: " . safer_echo($n);
+            break;
+        }
+
+}
+
 ?>

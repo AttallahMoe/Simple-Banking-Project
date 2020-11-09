@@ -1,22 +1,22 @@
-<?php require_once(__DIR__ . "/partials/nav.php); ?>
-
+<?php require_once(__DIR__ . "/partials/nav.php"); ?>
 <?php
-if(!has_role("Admin)){
-	flash("You don't have permission to access this page");
-	die(header("Location: login.php"));	
+if (!has_role("Admin")) {
+    //this will redirect to login and kill the rest of this script (prevent it from executing)
+    flash("You don't have permission to access this page");
+    die(header("Location: login.php"));
 }
 ?>
-
 <?php
 $query = "";
 $results = [];
-if (isset($_POST["query"]){
+if (isset($_POST["query"])){
 	$query = $_POST["query"];
 }
 
 if (isset($_POST["search"]) && !empty($query)) {
 	$db = getDB();
-	$stmt = $db->prepare("SELECT account_number, account_type,user_id, balance from Accounts WHERE name like :q LIMIT 10");
+	$stmt = $db->prepare("SELECT id, account_number, account_type,user_id, balance from Accounts WHERE account_number like :q LIMIT 10");
+	$r = $stmt->execute([":q"=> "%query%"]);
         if ($r) {
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
@@ -40,7 +40,7 @@ if (isset($_POST["search"]) && !empty($query)) {
                     </div>
                     <div>
                         <div>Account Type:</div>
-                        <div><?php getState($r["account_type"]); ?></div>
+                        <div><?php getAccount($r["account_type"]); ?></div>
                     </div>
                     <div>
                         <div>Balance</div>
@@ -48,7 +48,7 @@ if (isset($_POST["search"]) && !empty($query)) {
                     </div>
                     <div>
                         <div>Owner Id:</div>
-                        <div><?php safer_echo($r["user_id"]); ?></div>
+                        <div><?php safer_echo($r["id"]); ?></div>
                     </div>
                     <div>
                         <a type="button" href="test_edit_Accounts.php?id=<?php safer_echo($r['id']); ?>">Edit</a>

@@ -9,7 +9,8 @@ if (!has_role("Admin")) {
 <?php
 //we'll put this at the top so both php block have access to it
 if (isset($_GET["id"])) {
-    $id = $_GET["id"];
+	$srcTrans = $_GET["id"];
+	$destTrans = $srcTrans + 1;
 }
 
 else{

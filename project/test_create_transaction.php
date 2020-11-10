@@ -75,7 +75,7 @@ if(isset($_POST["save"])){
         }	
 	
 	//Dest account
-	if ($failsafe) {
+	if ($check) {
             $stmt = $db->prepare("SELECT balance FROM Accounts WHERE id = :destAcct");
             $r = $stmt->execute([":destAcct" => $dest]);
             $destBalance = $stmt->fetch(PDO::FETCH_ASSOC);

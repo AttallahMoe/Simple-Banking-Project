@@ -68,8 +68,7 @@ function getMessages() {
     return array();
 }
 
-function getAccount()
-{
+function getAccount($n){
     switch ($n) {
         case "checking":
             echo "Checking";

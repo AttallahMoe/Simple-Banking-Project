@@ -12,7 +12,6 @@ $r = $stmt->execute();
 $accs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
-?>
 	<h3>Create Transaction</h3>
 	<form method = "POST">
 		<label>Source    </label>
@@ -113,7 +112,7 @@ if(isset($_POST["save"])){
 		$destAmount = $amount;
 	}
 if($check){
-	$stmt = $db->prepare("INSERT INTO Transactions (account_src_id, account_dest_id, action_type, amount, memo, expected_total) VALUES(:src, :dest:, :type, :amount,:memo, :expected)");
+	$stmt = $db->prepare("INSERT INTO Transactions (act_src_id, act_dest_id, action_type, amount, memo, expected_total) VALUES(:src, :dest:, :type, :amount,:memo, :expected)");
 	$r = $stmt->execute([
 		":src" => $src,
 		":dest" => $dest,
@@ -130,7 +129,7 @@ if($check){
 }
 
 if($check){
-        $stmt = $db->prepare("INSERT INTO Transactions (account_src_id, account_dest_id, action_type, amount, memo, expected_total) VALUES(:src, :dest:, :type, :amount,:memo, :expected)");
+        $stmt = $db->prepare("INSERT INTO Transactions (act_src_id, act_dest_id, action_type, amount, memo, expected_total) VALUES(:src, :dest:, :type, :amount,:memo, :expected)");
         $r = $stmt->execute([
                 ":src" => $dest,
 		":dest" => $src,

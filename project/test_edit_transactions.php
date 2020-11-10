@@ -64,3 +64,6 @@ $eggs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <h3>Edit Transactions</h3>
 <form method="POST">
+<input type = "number" placeholder = "Account Source" name="account_src_id" value=<?php echo $result["account_src_id"]; ?>"/>
+<input type = "number" placeholder = "Account Destination" name="account_dest_id" value=<?php echo $result["account_dest_id"]; ?>"/>
+<input type = "drop

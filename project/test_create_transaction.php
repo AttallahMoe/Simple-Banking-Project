@@ -124,7 +124,7 @@ if($check){
 	]);
 	if (!$r) {
 		$e = stmt->errorInfo();
-        	flash("Failed to write transaction for Source Account: " . var_export($e, true);
+        	flash("Failed to write transaction for Source Account: " . var_export($e, true));
 		$check = false;
     	}
 }
@@ -141,7 +141,7 @@ if($check){
         ]);
         if (!$r) {
                 $e = stmt->errorInfo();
-                flash("Failed to process transaction for Destination Account: " . var_export($e, true);
+                flash("Failed to process transaction for Destination Account: " . var_export($e, true));
                 $check = false;
         }
 }

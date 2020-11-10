@@ -123,7 +123,7 @@ if($check){
 		":expected" => $srcExpect
 	]);
 	if (!$r) {
-		$e = stmt->errorInfo();
+		$e = $stmt->errorInfo();
         	flash("Failed to write transaction for Source Account: " . var_export($e, true));
 		$check = false;
     	}
@@ -140,7 +140,7 @@ if($check){
                 ":expected" => $destExpect
         ]);
         if (!$r) {
-                $e = stmt->errorInfo();
+                $e = $stmt->errorInfo();
                 flash("Failed to process transaction for Destination Account: " . var_export($e, true));
                 $check = false;
         }

@@ -143,8 +143,7 @@ if(isset($_POST["edit"]) && $transactionPaired) {
 
 ?>
 <div class="bodyMain">
-    <h1><strong>TEST PAGE</strong></h1>
-    <h3>This page is used to edit a Transaction</h3>
+    <h3>Edit a Transaction</h3>
 
     <form method="POST">
         <label>Memo <br>

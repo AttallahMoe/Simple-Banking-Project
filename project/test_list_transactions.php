@@ -26,15 +26,13 @@ if(isset($_POST["search"]) && !empty($query)) {
 }
 ?>
 <div class="bodyMain">
-    <h1><strong>TEST PAGE</strong></h1>
-    <h3>This page is used to query transactions (For now, it uses the internal ID's for accounts)</h3>
+    <h1><strong>List Transactions</strong></h1>
 
     <form method="POST">
-        <label> Internal Account ID <br>
+        <label> Account ID <br>
             <input name="query" placeholder="Search" value="<?php safer_echo($query);?>"/>
         </label>
         <input type="submit" value="Search" name="search"/>
-        <input type="reset"/>
     </form>
 
     <div class="results">

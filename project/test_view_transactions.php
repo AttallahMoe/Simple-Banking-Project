@@ -23,7 +23,7 @@ if(isset($transId)){
         flash("Error fetching transaction info: " . var_export($e, true));
     }
 
-    $stmt = $db->prepare("SELECT Accounts.id, account_number, Users.username FROM Accounts as Accounts JOIN Users on Accounts.user_id = Users.id WHERE Accounts.id = :number");
+    $stmt = $db->prepare("SELECT Accs.id, account_number, Users.username FROM Accounts as Accs JOIN Users on Accs.user_id = Users.id WHERE Accs.id = :number");
     $r = $stmt->execute([":number" => $transResult["act_src_id"]]);
     $srcResult = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!$srcResult) {
@@ -31,7 +31,7 @@ if(isset($transId)){
         flash("Error fetching source info: " . var_export($e, true));
     }
 
-    $stmt = $db->prepare("SELECT Accounts.id, account_number, Users.username FROM Accounts as Accounts JOIN Users on Accounts.user_id = Users.id WHERE Accounts.id = :number");
+    $stmt = $db->prepare("SELECT Accs.id, account_number, Users.username FROM Accounts as Accs JOIN Users on Accs.user_id = Users.id WHERE Accs.id = :number");
     $r = $stmt->execute([":number" => $transResult["act_dest_id"]]);
     $destResult = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!$destResult) {
@@ -41,8 +41,7 @@ if(isset($transId)){
 }
 ?>
 <div class="bodyMain">
-    <h1><strong>TEST PAGE</strong></h1>
-    <h3>This page is used to view details of an transaction</h3>
+    <h3>Transaction Details</h3>
 
     <?php if(isset($destResult) && !empty($destResult)): ?>
         <div class="card">
@@ -52,11 +51,11 @@ if(isset($transId)){
             <div class="cardBody">
                 <div>
                     <div>Source Account: <?php safer_echo($transResult["act_src_id"]); ?></div>
-                    <div>Belonging to: <?php safer_echo($srcResult["username"]); ?></div> <br>
+                    <div>Owner: <?php safer_echo($srcResult["username"]); ?></div> <br>
                     <div>Destination Account: <?php safer_echo($transResult["act_dest_id"]); ?></div>
-                    <div>Belonging to: <?php safer_echo($destResult["username"]); ?></div> <br>
+                    <div>Owner: <?php safer_echo($destResult["username"]); ?></div> <br>
                     <div>Action Type: <?php safer_echo($transResult["action_type"]); ?></div>
-                    <div>Amount Moved: <?php safer_echo($transResult["amount"]); ?></div>
+                    <div>Amount Total: <?php safer_echo($transResult["amount"]); ?></div>
                     <div>Memo: <?php safer_echo($transResult["memo"]); ?></div>
                     <div>Date/Time Occurred: <?php safer_echo($transResult["created"]); ?></div>
                 </div>

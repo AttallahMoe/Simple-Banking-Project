@@ -12,9 +12,9 @@ if(!has_role("Admin")){
 		<input name="account_number" placeholder="Account Number"/>
 		<label>Account Type</label>
 		<select name="account_type">
-				<option value="0">Checking</option>
-				<option value="1">Saving</option>
-				<option value="2">Loan</option>
+				<option value="checking">Checking</option>
+				<option value="saving">Saving</option>
+				<option value="loan">Loan</option>
 		</select>
 		<input type="number" name="balance" value="balance" placeholder="Balance"/>
 		<input type="submit" name="save" value="Create"/>

@@ -55,7 +55,7 @@ if(isset($_POST["save"])){
         $worldID = 1;
 
         $stmt = $db->prepare("SELECT balance from Accounts WHERE id = :id");
-        $r = $db->execute([":id" => $worldID]);
+        $r = $stmt->execute([":id" => $worldID]);
         $worldBalance = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$r) {
@@ -70,7 +70,7 @@ if(isset($_POST["save"])){
         $updateWorldBalance = $worldBalance - $balance;
 
         $stmt = $db->prepare("UPDATE Accounts set balance=:updateWorldBalance WHERE id=:id");
-        $r = $db->execute([
+        $r = $stmt->execute([
            ":updateWorldBalance" => $updateWorldBalance,
             ":id" => $worldID
         ]);

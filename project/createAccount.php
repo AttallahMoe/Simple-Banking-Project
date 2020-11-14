@@ -92,6 +92,8 @@ if(isset($_POST["save"])){
             $r = $stmt->execute([":accNum" => $accNumFinal]);
             $sourceID = $stmt->fetch(PDO::FETCH_ASSOC);
 
+            $sourceID = (int)$sourceID;
+
             if(!$r){
                 $e = $stmt->errorInfo();
                 flash("Error getting Account ID: " . var_export($e, true));

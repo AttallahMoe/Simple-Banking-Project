@@ -14,11 +14,13 @@ if (!is_logged_in()) {
     die(header("Location: login.php"));
 }
 
+$check = true;
+
 if(isset($_POST["save"])){
 
 
 
-    $check = true;
+    //$check = true;
     $worldBalance = 0;
 
     $accNumRec = new SplFixedArray(1);
@@ -49,13 +51,15 @@ if(isset($_POST["save"])){
         flash("Error creating new Checking Account: " . var_export($e, true));
         $check = false;
     }
-
+?>
+<?php
     if($check){
 
         //Updating balance for world account
 
         $worldID = 1;
-
+        $db = getDB();
+        
         $stmt = $db->prepare("SELECT balance from Accounts WHERE id = :id");
         $r = $stmt->execute([":id" => $worldID]);
         $worldBalance = $stmt->fetch(PDO::FETCH_ASSOC);

@@ -98,6 +98,9 @@ if(isset($_POST["save"])){
             $sourceID = (int)$sourceID;
             */
 
+            $sourceID = $db->lastInsertId();
+            $sourceID = (int)$sourceID;
+
             if(!$r){
                 $e = $stmt->errorInfo();
                 flash("Error getting Account ID: " . var_export($e, true));
@@ -107,7 +110,7 @@ if(isset($_POST["save"])){
                 $stmt = $db->prepare("INSERT INTO Transactions (act_src_id, act_dest_id, action_type, amount, memo, expected_total) VALUES(:src, :dest, :type, :amount,:memo, :expected)");
                 $r = $stmt->execute([
                     ":src" => $worldID,
-                    ":dest" => $user,
+                    ":dest" => $sourceID,
                     ":type" => $action_type,
                     ":amount" => $worldAmount,
                     ":memo" => $memo,
@@ -123,7 +126,7 @@ if(isset($_POST["save"])){
             if($check) {
                 $stmt = $db->prepare("INSERT INTO Transactions (act_src_id, act_dest_id, action_type, amount, memo, expected_total) VALUES(:src, :dest, :type, :amount,:memo, :expected)");
                 $r = $stmt->execute([
-                    ":src" => $user,
+                    ":src" => $sourceID,
                     ":dest" => $worldID,
                     ":type" => $action_type,
                     ":amount" => $balance,

@@ -99,7 +99,7 @@ if(isset($_POST["save"])){
             */
 
             $sourceID = $db->lastInsertId();
-            $sourceID = (int)$sourceID;
+            //$sourceID = (int)$sourceID;
 
             if(!$r){
                 $e = $stmt->errorInfo();

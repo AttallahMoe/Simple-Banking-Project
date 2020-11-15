@@ -90,16 +90,14 @@ if(isset($_POST["save"])){
             $memo = "N.A.C";
             $worldAmount = $balance * -1;
 
-            /*
+
             $stmt = $db->prepare("SELECT id from Accounts WHERE account_number =:accNum");
             $r = $stmt->execute([":accNum" => $accNumFinal]);
             $sourceID = $stmt->fetch(PDO::FETCH_ASSOC);
 
             $sourceID = (int)$sourceID;
-            */
 
-            $sourceID = $db->lastInsertId();
-            $sourceID = (int)$sourceID;
+
 
             if(!$r){
                 $e = $stmt->errorInfo();
@@ -141,10 +139,9 @@ if(isset($_POST["save"])){
             }
         }
     }
-
-    //header("Location: home.php");
-
-
+    if($check) {
+        //header("Location: home.php");
+    }
 }
 
 ?>

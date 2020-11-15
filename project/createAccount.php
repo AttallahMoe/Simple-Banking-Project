@@ -93,18 +93,17 @@ if(isset($_POST["save"])){
             $action_type = "deposit";
             $memo = "N.A.C";
             $worldAmount = $balance * -1;
+            $result = [];
 
-            /*
+
             $stmt = $db->prepare("SELECT id from Accounts WHERE account_number =:accNum");
             $r = $stmt->execute([":accNum" => $accNumFinal]);
-            $sourceID = $stmt->fetch(PDO::FETCH_ASSOC);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            $sourceID = (int)$sourceID;
-            */
+            $sourceID = $result["id"];
+
 
             //$sourceID = $db->lastInsertId();
-            //$sourceID = (int)$sourceID;
-            $sourceID = 16;
 
             if(!$r){
                 $e = $stmt->errorInfo();

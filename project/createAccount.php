@@ -135,6 +135,8 @@ if(isset($_POST["save"])){
         }
     }
 
+    header("Location: profile.php");
+
 
 }
 

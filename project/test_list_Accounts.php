@@ -10,19 +10,19 @@ if (!has_role("Admin")) {
 $query = "";
 $results = [];
 if (isset($_POST["query"])){
-	$query = $_POST["query"];
+    $query = $_POST["query"];
 }
 
 if (isset($_POST["search"]) && !empty($query)) {
-	$db = getDB();
-	$stmt = $db->prepare("SELECT id, account_number, account_type, balance from Accounts WHERE account_number like :q LIMIT 10");
-	$r = $stmt->execute([":q"=> "%$query%"]);
-        if ($r) {
+    $db = getDB();
+    $stmt = $db->prepare("SELECT id, account_number, account_type, balance from Accounts WHERE account_number like :q LIMIT 10");
+    $r = $stmt->execute([":q"=> "%$query%"]);
+    if ($r) {
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        }
-        else {
+    }
+    else {
         flash("There was a problem fetching the results");
-        }
+    }
 }
 ?>
 <form method="POST">

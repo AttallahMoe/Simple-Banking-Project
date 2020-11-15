@@ -16,6 +16,8 @@ if (!is_logged_in()) {
 
 if(isset($_POST["save"])){
 
+
+
     $check = true;
     $worldBalance = 0;
 
@@ -88,11 +90,13 @@ if(isset($_POST["save"])){
             $memo = "N.A.C";
             $worldAmount = $balance * -1;
 
+            /*
             $stmt = $db->prepare("SELECT id from Accounts WHERE account_number =:accNum");
             $r = $stmt->execute([":accNum" => $accNumFinal]);
             $sourceID = $stmt->fetch(PDO::FETCH_ASSOC);
 
             $sourceID = (int)$sourceID;
+            */
 
             if(!$r){
                 $e = $stmt->errorInfo();
@@ -103,7 +107,7 @@ if(isset($_POST["save"])){
                 $stmt = $db->prepare("INSERT INTO Transactions (act_src_id, act_dest_id, action_type, amount, memo, expected_total) VALUES(:src, :dest, :type, :amount,:memo, :expected)");
                 $r = $stmt->execute([
                     ":src" => $worldID,
-                    ":dest" => $sourceID,
+                    ":dest" => $user,
                     ":type" => $action_type,
                     ":amount" => $worldAmount,
                     ":memo" => $memo,
@@ -119,7 +123,7 @@ if(isset($_POST["save"])){
             if($check) {
                 $stmt = $db->prepare("INSERT INTO Transactions (act_src_id, act_dest_id, action_type, amount, memo, expected_total) VALUES(:src, :dest, :type, :amount,:memo, :expected)");
                 $r = $stmt->execute([
-                    ":src" => $sourceID,
+                    ":src" => $user,
                     ":dest" => $worldID,
                     ":type" => $action_type,
                     ":amount" => $balance,
@@ -135,7 +139,7 @@ if(isset($_POST["save"])){
         }
     }
 
-    header("Location: profile.php");
+    header("Location: home.php");
 
 
 }

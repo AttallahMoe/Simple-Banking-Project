@@ -59,7 +59,7 @@ if(isset($_POST["save"])){
 
         $worldID = 1;
         $db = getDB();
-        
+
         $stmt = $db->prepare("SELECT balance from Accounts WHERE id = :id");
         $r = $stmt->execute([":id" => $worldID]);
         $worldBalance = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -102,8 +102,9 @@ if(isset($_POST["save"])){
             $sourceID = (int)$sourceID;
             */
 
-            $sourceID = $db->lastInsertId();
+            //$sourceID = $db->lastInsertId();
             //$sourceID = (int)$sourceID;
+            $sourceID = 16;
 
             if(!$r){
                 $e = $stmt->errorInfo();

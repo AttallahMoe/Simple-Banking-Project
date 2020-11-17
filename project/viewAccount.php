@@ -1,22 +1,18 @@
 <?php require_once(__DIR__ . "/partials/nav.php"); ?>
 <?php
-if (!has_role("Admin")) {
+if (!is_logged_in()) {
     //this will redirect to login and kill the rest of this script (prevent it from executing)
-    flash("You don't have permission to access this page");
+    flash("You must be logged in to access this page");
     die(header("Location: login.php"));
 }
-?>
-<?php
-$query = "";
+$check = true;
 $results = [];
-if (isset($_POST["query"])){
-    $query = $_POST["query"];
-}
 
-if (isset($_POST["search"]) && !empty($query)) {
+if ($check) {
     $db = getDB();
-    $stmt = $db->prepare("SELECT id, account_number, account_type, balance from Accounts WHERE account_number like :q LIMIT 10");
-    $r = $stmt->execute([":q"=> "%$query%"]);
+    $user = get_user_id();
+    $stmt = $db->prepare("SELECT id, account_number, account_type, balance from Accounts WHERE user_id=:user LIMIT 10");
+    $r = $stmt->execute([":user"=> $user ]);
     if ($r) {
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -25,12 +21,8 @@ if (isset($_POST["search"]) && !empty($query)) {
     }
 }
 ?>
-<form method="POST">
-    <input name="query" placeholder="Search" value="<?php safer_echo($query); ?>"/>
-    <input type="submit" value="Search" name="search"/>
-</form>
 <div class="results">
-    <?php if (count($results) > 0): ?>
+    <?php if(count($results) > 0): ?>
         <div class="list-group">
             <?php foreach ($results as $r): ?>
                 <div class="list-group-item">
@@ -46,14 +38,9 @@ if (isset($_POST["search"]) && !empty($query)) {
                         <div>Balance</div>
                         <div><?php safer_echo($r["balance"]); ?></div>
                     </div>
-                    <div>
-                        <div>Owner Id:</div>
-                        <div><?php safer_echo($r["id"]); ?></div>
-                    </div>
-                    <div>
-                        <a type="button" href="test_edit_Accounts.php?id=<?php safer_echo($r['id']); ?>">Edit</a>
-                        <a type="button" href="test_view_Accounts.php?id=<?php safer_echo($r['id']); ?>">View</a>
-                    </div>
+                        <div>
+                            <a href="viewTransactions.php?id=<?php safer_echo($r['id']); ?>">View Transaction History</a>
+                        </div>
                 </div>
             <?php endforeach; ?>
         </div>

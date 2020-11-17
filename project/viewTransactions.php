@@ -23,7 +23,7 @@ else{
 //TODO Fix this so that it returns actual account numbers in the query, not the internal id.
 if($check) {
     $db = getDB();
-    $stmt = $db->prepare("SELECT act_src_id, Accounts.id, amount, action_type, memo FROM Transactions JOIN Accounts on Accounts.id = Transactions.act_dest_id WHERE act_src_id =:id LIMIT 10");
+    $stmt = $db->prepare("SELECT act_src_id, Accounts.id, Accounts.account_number, amount, action_type, memo FROM Transactions JOIN Accounts on Accounts.id = Transactions.act_dest_id WHERE act_src_id =:id LIMIT 10");
     $r = $stmt->execute([":id" => $transId]);
     if ($r){
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -66,7 +66,7 @@ if($check){
                     <div class="list-group-item">
                         <div>
                             <div>Destination Account ID:</div>
-                            <div><?php safer_echo($r["id"]); ?></div>
+                            <div><?php safer_echo($r["account_number"]); ?></div>
                         </div>
                         <div>
                             <div>Transaction Type:</div>

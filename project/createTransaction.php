@@ -69,7 +69,7 @@ if(isset($_POST["save"])){
 
     //world account balance
 
-    $stmt = $db->prepare("SELECT balance from Accounts WHERE id = :id");
+    $stmt = $db->prepare("SELECT balance from Accounts WHERE id=:id");
     $r = $stmt->execute([":id" => $worldID]);
     $worldBalance = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -87,24 +87,24 @@ if(isset($_POST["save"])){
 
     if($check){
         if($type == "withdraw"){
-            if($amount > $src_Bal){
+            if($amount > $srcBalance){
                 $check = false;
                 flash("Please enter valid amount to withdraw");
             }
             else{
-                $srcExpect = $srcBalance + $amount;
-                $srcAmount = $amount;
+                $srcExpect = $srcBalance - $amount;
+                $srcAmount = $amount * -1;
 
-                $worldExpect = $worldBalance - $amount;
-                $worldAmount = $amount * -1;
+                $worldExpect = $worldBalance + $amount;
+                $worldAmount = $amount;
             }
         }
         elseif ($type == "deposit"){
-            $srcExpect = $srcBalance - $amount;
-            $srcAmount = $amount * -1;
+            $srcExpect = $srcBalance + $amount;
+            $srcAmount = $amount;
 
-            $worldExpect = $worldBalance + $amount;
-            $worldAmount = $amount;
+            $worldExpect = $worldBalance - $amount;
+            $worldAmount = $amount * -1;
         }
     }
 
@@ -141,9 +141,6 @@ if(isset($_POST["save"])){
             $check = false;
         }
     }
-    if($r){
-        flash("Transaction processed successfully!");
-    }
 
     //updating world and source balances
 
@@ -165,7 +162,7 @@ if(isset($_POST["save"])){
         $stmt = $db->prepare("UPDATE Accounts set balance=:srcUpdate WHERE id=:id");
         $r = $stmt->execute([
             ":srcUpdate" => $srcExpect,
-            ":id" => $src
+            ":id" => $srcID
         ]);
 
         if(!$r){
@@ -173,6 +170,9 @@ if(isset($_POST["save"])){
             flash("Error updating Source balance: " . var_export($e, true));
             $check = false;
         }
+    }
+    if($check){
+        flash("Transaction processed successfully!");
     }
 
 }

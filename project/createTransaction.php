@@ -76,7 +76,7 @@ if(isset($_POST["save"])){
     }
 
     $amount = (int)$amount;
-    $src_Bal = (int)$srcBalance;
+    $srcBalance = (int)$srcBalance;
     $worldBalance = (int)$worldBalance;
 
     //checking to see if action_type is withdraw or deposit

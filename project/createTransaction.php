@@ -149,9 +149,9 @@ if(isset($_POST["save"])){
 
     if($check){
         //world
-        $stmt = $db->prepare("UPDATE Accounts set balance=:update WHERE id=:id");
+        $stmt = $db->prepare("UPDATE Accounts set balance=:worldUpdate WHERE id=:id");
         $r = $stmt->execute([
-            ":update" => $worldExpect,
+            ":worldUpdate" => $worldExpect,
             ":id" => $worldID
         ]);
 
@@ -162,9 +162,9 @@ if(isset($_POST["save"])){
         }
 
         //source
-        $stmt = $db->prepare("UPDATE Accounts set balance=:update WHERE id=:id");
+        $stmt = $db->prepare("UPDATE Accounts set balance=:srcUpdate WHERE id=:id");
         $r = $stmt->execute([
-            ":update" => $srcExpect,
+            ":srcUpdate" => $srcExpect,
             ":id" => $src
         ]);
 

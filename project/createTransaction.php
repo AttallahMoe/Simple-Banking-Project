@@ -52,10 +52,14 @@ if(isset($_POST["save"])){
     $worldExpect = 0;
 
     //source account balance
-
-    $stmt = $db->prepare("SELECT balance from Accounts WHERE account_number=:src");
+    $results = [];
+    $stmt = $db->prepare("SELECT id, balance from Accounts WHERE account_number=:src");
     $r = $stmt->execute([":src" => $src]);
-    $srcBalance = $stmt->fetch(PDO::FETCH_ASSOC);
+    $results = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    $srcBalance = $results["balance"];
+    $srcID = $results["id"];
+
 
     if (!$r) {
         $e = $stmt->errorInfo();
@@ -107,7 +111,7 @@ if(isset($_POST["save"])){
     if($check){
         $stmt = $db->prepare("INSERT INTO Transactions (act_src_id, act_dest_id, amount, action_type, memo, expected_total) VALUES(:src, :dest,:amount, :type, :memo, :expected)");
         $r = $stmt->execute([
-            ":src" => $src,
+            ":src" => $srcID,
             ":dest" => $worldID,
             ":type" => $type,
             ":amount" => $srcAmount,
@@ -125,7 +129,7 @@ if(isset($_POST["save"])){
         $stmt = $db->prepare("INSERT INTO Transactions (act_src_id, act_dest_id, action_type, amount, memo, expected_total) VALUES(:src, :dest, :type, :amount,:memo, :expected)");
         $r = $stmt->execute([
             ":src" => $worldID,
-            ":dest" => $src,
+            ":dest" => $srcID,
             ":type" => $type,
             ":amount" => $worldAmount,
             ":memo" => $memo,

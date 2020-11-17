@@ -146,7 +146,7 @@ if(isset($_POST["save"])){
         }
     }
 
-    //header("Location: home.php");
+    header("Location: home.php");
 
 
 }

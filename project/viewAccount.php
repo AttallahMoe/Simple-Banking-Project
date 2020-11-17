@@ -11,7 +11,7 @@ $results = [];
 if ($check) {
     $db = getDB();
     $user = get_user_id();
-    $stmt = $db->prepare("SELECT account_number, account_type, balance from Accounts WHERE user_id=:user LIMIT 10");
+    $stmt = $db->prepare("SELECT id, account_number, account_type, balance from Accounts WHERE user_id=:user LIMIT 10");
     $r = $stmt->execute([":user"=> $user ]);
     if ($r) {
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -38,6 +38,9 @@ if ($check) {
                         <div>Balance</div>
                         <div><?php safer_echo($r["balance"]); ?></div>
                     </div>
+                        <div>
+                            <a href="viewTransactions.php?id=<?php safer_echo($r['id']); ?>">View Transaction History</a>
+                        </div>
                 </div>
             <?php endforeach; ?>
         </div>

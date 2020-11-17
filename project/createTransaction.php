@@ -8,7 +8,7 @@ if (!is_logged_in()) {
 }
 $db = getDB();
 $user = get_user_id();
-$stmt = $db->prepare("SELECT id,account_number, from Accounts WHERE user_id=:id LIMIT 10");
+$stmt = $db->prepare("SELECT account_number from Accounts WHERE user_id=:id LIMIT 10");
 $r = $stmt->execute([":id" => $user]);
 $accs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -18,7 +18,7 @@ $accs = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <label>Choose Account</label>
     <select name="account_source" placeholder="Account Source">
         <?php foreach ($accs as $acc): ?>
-            <option value="<?php safer_echo($acc["id"]); ?>"
+            <option value="<?php safer_echo($acc["account_number"]); ?>"
             ><?php safer_echo($acc["account_number"]); ?></option>
         <?php endforeach; ?>
     </select>

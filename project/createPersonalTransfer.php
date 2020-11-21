@@ -56,9 +56,9 @@ if(isset($_POST["save"])){
 
     //source account balance
     $results = [];
-    $stmt = $db->prepare("SELECT id, balance from Accounts WHERE account_number=:src");
+    $stmt = $db->prepare("SELECT balance from Accounts WHERE account_number=:src");
     $r = $stmt->execute([":src" => $src]);
-    $results = $stmt->fetch(PDO::FETCH_ASSOC);
+    $srcBalance = $stmt->fetch(PDO::FETCH_ASSOC);
 
     $srcBalance = $results["balance"];
     $srcID = $results["id"];
@@ -76,8 +76,8 @@ if(isset($_POST["save"])){
     $r = $stmt->execute([":dest" => $dest]);
     $destResults = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    $destBalance = $results["balance"];
-    $destID = $results["id"];
+    $destBalance = $destResults["balance"];
+    $destID = $destResults["id"];
 
     if (!$r){
         $e = $stmt->errorInfo();

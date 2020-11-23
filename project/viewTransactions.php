@@ -44,8 +44,12 @@ if($check) {
     //if(!$page) $page=0;
     $start = $page * $numPerPage;
 
-    $stmt = $db->prepare("SELECT act_src_id, Accounts.id, Accounts.account_number, amount, action_type, memo FROM Transactions JOIN Accounts on Accounts.id = Transactions.act_dest_id WHERE act_src_id =:id LIMIT $start,$numPerPage");
-    $r = $stmt->execute([":id" => $transId]);
+    $stmt = $db->prepare("SELECT act_src_id, Accounts.id, Accounts.account_number, amount, action_type, memo FROM Transactions JOIN Accounts on Accounts.id = Transactions.act_dest_id WHERE act_src_id =:id LIMIT :strt,:page");
+    $r = $stmt->execute([
+            ":id" => $transId,
+            ":strt" => $start,
+            ":page" => $numPerPage
+    ]);
     if ($r){
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }

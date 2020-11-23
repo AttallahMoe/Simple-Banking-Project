@@ -31,7 +31,7 @@ if($check) {
     $db = getDB();
 
     //TODO pageination
-    $numPerPage = 10;
+    $numPerPage = 5;
     $numRecords = 0;
 
     $stmt = $db->prepare("SELECT COUNT(act_src_id) FROM Transactions WHERE id=:id");

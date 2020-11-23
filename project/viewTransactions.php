@@ -20,10 +20,24 @@ else{
 
 
 
-//TODO Fix this so that it returns actual account numbers in the query, not the internal id.
+//TODO Fix this so that it returns actual account numbers in the query, not the internal id. Fixed!!!
 if($check) {
     $db = getDB();
-    $stmt = $db->prepare("SELECT act_src_id, Accounts.id, Accounts.account_number, amount, action_type, memo FROM Transactions JOIN Accounts on Accounts.id = Transactions.act_dest_id WHERE act_src_id =:id LIMIT 10");
+
+    //TODO pageination
+    $numPerPage = 1;
+    $numRecords = 0;
+
+    $stmt = $db->prepare("SELECT COUNT(act_src_id) FROM Transactions WHERE id=:id");
+    $r = $stmt->execute([":id" => $transId]);
+    $numRecords = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    $numRecords = (int)$numRecords;
+    $numLinks = ceil($numRecords/$numPerPage); //gets number of links to be created
+    $page = $_GET['start'];
+    $start = $page * $numPerPage;
+
+    $stmt = $db->prepare("SELECT act_src_id, Accounts.id, Accounts.account_number, amount, action_type, memo FROM Transactions JOIN Accounts on Accounts.id = Transactions.act_dest_id WHERE act_src_id =:id LIMIT $start,$numPerPage");
     $r = $stmt->execute([":id" => $transId]);
     if ($r){
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -32,6 +46,12 @@ if($check) {
         flash("There was a problem fetching the results.");
         $check = false;
     }
+
+    for($i=0;$i<$numLinks;$i++){
+        $y = $i + 1;
+        echo '<a href="viewTransactions.php?id='.$transId.'?start='.$i.'">'.$y.'</a>';
+    }
+
 }
 /*
 if($check){

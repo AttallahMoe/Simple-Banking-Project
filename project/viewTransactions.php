@@ -18,14 +18,20 @@ else{
     flash("Id is not set in url");
 }
 
-
+if(isset($_GET["start"])){
+    $page = $_GET["start"];
+}
+else{
+    $page = 0;
+    flash("page is not set in url");
+}
 
 //TODO Fix this so that it returns actual account numbers in the query, not the internal id. Fixed!!!
 if($check) {
     $db = getDB();
 
     //TODO pageination
-    $numPerPage = 1;
+    $numPerPage = 10;
     $numRecords = 0;
 
     $stmt = $db->prepare("SELECT COUNT(act_src_id) FROM Transactions WHERE id=:id");
@@ -34,8 +40,8 @@ if($check) {
 
     $numRecords = (int)$numRecords;
     $numLinks = ceil($numRecords/$numPerPage); //gets number of links to be created
-    $page = $_GET['start'];
-    if(!$page) $page=0;
+    //$page = $_GET['start'];
+    //if(!$page) $page=0;
     $start = $page * $numPerPage;
 
     $stmt = $db->prepare("SELECT act_src_id, Accounts.id, Accounts.account_number, amount, action_type, memo FROM Transactions JOIN Accounts on Accounts.id = Transactions.act_dest_id WHERE act_src_id =:id LIMIT $start,$numPerPage");

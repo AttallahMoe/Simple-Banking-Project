@@ -24,7 +24,7 @@ $accs = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </select>
     <label>Enter Destination Account Information</label>
     <input type="number" minlength="4" maxlength="4" placeholder="Last four digits of ACC #" name="accNumber"/>
-    <input type="text" placeholder="Destination Account Holders Last Name" value="lastName"/>
+    <input type="text" name="lastName" placeholder="Destination Account Holders Last Name"/>
     <input type="number" min="0.00" placeholder="Amount" name="amount"/>
     <input type="text" placeholder= "Memo" name="memo"/>
     <input type="submit" name="save" value="Transfer"/>

@@ -25,6 +25,22 @@ function get_username() {
     return "";
 }
 
+//first and last name helpers
+
+function get_first() {
+    if (is_logged_in() && isset($_SESSION["user"]["firstName"])) {
+        return $_SESSION["user"]["firstName"];
+    }
+    return "";
+}
+
+function get_last() {
+    if (is_logged_in() && isset($_SESSION["user"]["lastName"])) {
+        return $_SESSION["user"]["lastName"];
+    }
+    return "";
+}
+
 function get_email() {
     if (is_logged_in() && isset($_SESSION["user"]["email"])) {
         return $_SESSION["user"]["email"];

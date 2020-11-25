@@ -68,7 +68,7 @@ if(isset($_POST["save"])){
 
     //dest account balance
     $destResults = [];
-    $stmt = $db->prepare("SELECT acc.id, acc.balance from Accounts as acc WHERE account_number like :dest AND Users.lastName=:lastName");
+    $stmt = $db->prepare("SELECT acc.id, acc.balance from Accounts as acc INNER JOIN Users WHERE acc.account_number like :dest AND acc.user_id = Users.id AND Users.lastName=:lastName");
     $r = $stmt->execute([":dest" => "%$dest", ":lastName" => $destName]);
     $destResults = $stmt->fetch(PDO::FETCH_ASSOC);
 

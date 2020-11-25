@@ -1,2 +1,2 @@
 ALTER TABLE Transactions
-    ALTER COLUMN action_type VARCHAR(15);
+    ALTER COLUMN action_type varchar(15);

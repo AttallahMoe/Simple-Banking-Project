@@ -63,9 +63,14 @@ if (isset($_POST["saved"])) {
             $newUsername = $username;
         }
     }
+
+    //First and Last Name
+    $first = $_POST["first"];
+    $last = $_POST["last"];
+
     if ($isValid) {
-        $stmt = $db->prepare("UPDATE Users set email = :email, username= :username where id = :id");
-        $r = $stmt->execute([":email" => $newEmail, ":username" => $newUsername, ":id" => get_user_id()]);
+        $stmt = $db->prepare("UPDATE Users set email = :email, username= :username, firstName=:firstName, lastName=:lastName where id = :id");
+        $r = $stmt->execute([":email" => $newEmail, ":username" => $newUsername, ":firstName" => $first, ":lastName" => $last,":id" => get_user_id()]);
         if ($r) {
             flash("Updated profile");
         }
@@ -111,6 +116,8 @@ if (isset($_POST["saved"])) {
 
     <form method="POST">
         <input type="email" name="email" placeholder="Email" value="<?php safer_echo(get_email()); ?>"/>
+        <input type="text" name="first" placeholder="First Name"/>
+        <input type="text" name="last" placeholder="Last Name"/>
         <input type="text" maxlength="60" name="username" placeholder="Username" value="<?php safer_echo(get_username()); ?>"/>
         <!-- DO NOT PRELOAD PASSWORD-->
         <input type="password" placeholder="Password" name="password"/>

@@ -62,6 +62,21 @@ if($check) {
 }
 
 ?>
+<form method="POST">
+    <label><strong>Filter Transactions</strong></label>
+    <label>START:</label>
+    <input type="date" name="dateStart" />
+    <label>END:</label>
+    <input type="date" name="dateTo"/>
+    <label>Transaction Type</label>
+    <select name="action_type">
+        <option value="deposit">Deposit</option>
+        <option value="withdraw">Withdraw</option>
+        <option value="transfer">Transfer</option>
+    </select>
+    <input type="submit" name="save" value="Filter" />
+</form>
+
 <div class="bodyMain">
     <h1><strong>List Transactions</strong></h1>
 
@@ -94,17 +109,55 @@ if($check) {
         <?php endif; ?>
     </div>
 
-<form method="POST">
-    <label><strong>Filter Transactions</strong></label>
-    <label>START</label>
-    <input type="date" name="dateStart" />
-    <br/>
-    <label>END</label>
-    <input type="date" name="dateTo"/>
-    <label>Transaction Type</label>
-    <select name="action_type">
-        <option value="deposit">Deposit</option>
-        <option value="withdraw">Withdraw</option>
-        <option value="transfer">Transfer</option>
-    </select>
-</form>
+<?php
+    if(isset($_POST["save"])){
+        $startDate = $_POST["dateStart"];
+        $endDate = $_POST["dateTo"];
+        $type = $_POST["action_type"];
+        $results = [];
+
+        $stmt = $db->prepare("SELECT act_src_id, Accounts.id, Accounts.account_number, amount, action_type, memo FROM Transactions JOIN Accounts on Accounts.id = Transactions.act_dest_id WHERE act_src_id =:id AND action_type=:action_type AND created BETWEEN CONVERT(datetime, startDate=:startDate) AND CONVERT(datetime, endDate=:endDate) LIMIT 10");
+        $r = $stmt->execute([":id" => $transId, ":action_type" => $type, ":startDate" => $startDate, ":endDate" => $endDate]);
+        if ($r){
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+        else{
+            flash("There was a problem fetching the results.");
+            $check = false;
+        }
+
+
+    }
+?>
+
+    <div class="bodyMain">
+        <h1><strong>Filtered Transactions</strong></h1>
+
+        <div class="results">
+            <?php if(count($results) > 0): ?>
+                <div class="list-group">
+                    <?php foreach ($results as $r): ?>
+                        <div class="list-group-item">
+                            <div>
+                                <div>Destination Account ID:</div>
+                                <div><?php safer_echo($r["account_number"]); ?></div>
+                            </div>
+                            <div>
+                                <div>Transaction Type:</div>
+                                <div><?php safer_echo($r["action_type"]); ?></div>
+                            </div>
+                            <div>
+                                <div>Amount Moved:</div>
+                                <div><?php safer_echo($r["amount"]); ?></div>
+                            </div>
+                            <div>
+                                <div>Memo:</div>
+                                <div><?php safer_echo($r["memo"]); ?></div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php else: ?>
+                <p>No Results</p>
+            <?php endif; ?>
+        </div>

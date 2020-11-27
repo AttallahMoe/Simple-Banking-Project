@@ -107,7 +107,7 @@ if($check) {
                 <?php endforeach; ?>
             </div>
         <?php else: ?>
-            <p>No Results</p>
+            <div style="display:none"></div>
         <?php endif; ?>
     </div>
 
@@ -117,9 +117,6 @@ if($check) {
         $endDate = $_POST["dateTo"];
         $type = $_POST["action_type"];
         $results_filter = [];
-
-        $startDate = (String)$startDate;
-        echo $startDate;
 
         $stmt = $db->prepare("SELECT act_src_id, Accounts.id, Accounts.account_number, amount, action_type, memo FROM Transactions JOIN Accounts on Accounts.id = Transactions.act_dest_id WHERE act_src_id =:id AND action_type=:action_type AND CAST(created AS DATE) BETWEEN startDate=:startDate AND endDate=:endDate LIMIT 10");
         $r = $stmt->execute([":id" => $transId, ":action_type" => $type, ":startDate" => $startDate, ":endDate" => $endDate]);

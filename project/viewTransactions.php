@@ -44,7 +44,7 @@ if($check) {
     //if(!$page) $page=0;
     $start = $page * $numPerPage;
 
-    $stmt = $db->prepare("SELECT act_src_id, Accounts.id, Accounts.account_number, amount, action_type, memo FROM Transactions JOIN Accounts on Accounts.id = Transactions.act_dest_id WHERE act_src_id =:id LIMIT $start, $numPerPage");
+    $stmt = $db->prepare("SELECT act_src_id, Accounts.id, Accounts.account_number, amount, action_type, memo FROM Transactions JOIN Accounts on Accounts.id = Transactions.act_dest_id WHERE act_src_id =:id LIMIT 10");
     $r = $stmt->execute([":id" => $transId]);
     if ($r){
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -60,27 +60,6 @@ if($check) {
     }
 
 }
-/*
-if($check){
-    $results2 = new SplFixedArray(10);
-    $i = 0;
-    foreach($results as $r){
-        $destID = $r["act_dest_id"];
-        $stmt = $db->prepare("SELECT account_number FROM Accounts WHERE id=:dest");
-        $q = $stmt->execute([":dest" => $destID]);
-        if ($q){
-            $results2[$i] = $stmt->fetch(PDO::FETCH_ASSOC);
-            $i++;
-        }
-        else{
-            flash("There was a problem fetching the destination account number.");
-            $check = false;
-        }
-    }
-}
-*/
-
-
 
 ?>
 <div class="bodyMain">
@@ -114,3 +93,18 @@ if($check){
             <p>No Results</p>
         <?php endif; ?>
     </div>
+
+<form method="POST">
+    <label><strong>Filter Transactions</strong></label>
+    <label>START</label>
+    <input type="date" name="dateStart" />
+    <br/>
+    <label>END</label>
+    <input type="date" name="dateTo"/>
+    <label>Transaction Type</label>
+    <select name="action_type">
+        <option value="deposit">Deposit</option>
+        <option value="withdraw">Withdraw</option>
+        <option value="transfer">Transfer</option>
+    </select>
+</form>

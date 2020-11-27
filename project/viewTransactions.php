@@ -64,11 +64,13 @@ if($check) {
 ?>
 <form method="POST">
     <label><strong>Filter Transactions</strong></label>
+    <br>
     <label>START:<br></label>
     <input type="date" name="dateStart" />
+    <br>
     <label>END:<br></label>
     <input type="date" name="dateTo"/>
-    <label>Transaction Type <br></label>
+    <label>Transaction Type: <br></label>
     <select name="action_type">
         <option value="deposit">Deposit</option>
         <option value="withdraw">Withdraw</option>
@@ -81,7 +83,7 @@ if($check) {
     <h1><strong>List Transactions</strong></h1>
 
     <div class="results">
-        <?php if(count($results) > 0): ?>
+        <?php if(count($results) > 0 && !isset($_POST["save"])): ?>
             <div class="list-group">
                 <?php foreach ($results as $r): ?>
                     <div class="list-group-item">
@@ -114,7 +116,7 @@ if($check) {
         $startDate = $_POST["dateStart"];
         $endDate = $_POST["dateTo"];
         $type = $_POST["action_type"];
-        $results = [];
+        $results_filter = [];
 
         $startDate = (String)$startDate;
         echo $startDate;
@@ -122,7 +124,7 @@ if($check) {
         $stmt = $db->prepare("SELECT act_src_id, Accounts.id, Accounts.account_number, amount, action_type, memo FROM Transactions JOIN Accounts on Accounts.id = Transactions.act_dest_id WHERE act_src_id =:id AND action_type=:action_type AND CAST(created AS DATE) BETWEEN startDate=:startDate AND endDate=:endDate LIMIT 10");
         $r = $stmt->execute([":id" => $transId, ":action_type" => $type, ":startDate" => $startDate, ":endDate" => $endDate]);
         if ($r){
-            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $results_filter = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
         else{
             flash("There was a problem fetching the results.");
@@ -137,9 +139,9 @@ if($check) {
         <h1><strong>Filtered Transactions</strong></h1>
 
         <div class="results">
-            <?php if(count($results) > 0): ?>
+            <?php if(count($results_filter) > 0): ?>
                 <div class="list-group">
-                    <?php foreach ($results as $r): ?>
+                    <?php foreach ($results_filter as $r): ?>
                         <div class="list-group-item">
                             <div>
                                 <div>Destination Account ID:</div>

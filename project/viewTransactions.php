@@ -116,12 +116,12 @@ if($check) {
         $startDate = $_POST["dateStart"];
         $endDate = $_POST["dateTo"];
         $type = $_POST["action_type"];
-        $results_filter = [];
+        $results = [];
 
         $stmt = $db->prepare("SELECT act_src_id, Accounts.id, Accounts.account_number, amount, action_type, memo FROM Transactions JOIN Accounts on Accounts.id = Transactions.act_dest_id WHERE act_src_id =:id AND action_type=:action_type AND CAST(created AS DATE) BETWEEN startDate=:startDate AND endDate=:endDate LIMIT 10");
         $r = $stmt->execute([":id" => $transId, ":action_type" => $type, ":startDate" => $startDate, ":endDate" => $endDate]);
         if ($r){
-            $results_filter = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
         else{
             flash("There was a problem fetching the results.");
@@ -133,12 +133,12 @@ if($check) {
 ?>
 
     <div class="bodyMain">
-        <h1><strong>Filtered Transactions</strong></h1>
 
         <div class="results">
-            <?php if(count($results_filter) > 0): ?>
+            <?php if(count($results) > 0 && isset($_POST["save"])): ?>
+                <h1><strong>Filtered Transactions</strong></h1>
                 <div class="list-group">
-                    <?php foreach ($results_filter as $r): ?>
+                    <?php foreach ($results as $r): ?>
                         <div class="list-group-item">
                             <div>
                                 <div>Destination Account ID:</div>

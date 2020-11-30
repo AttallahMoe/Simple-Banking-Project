@@ -23,7 +23,6 @@ if(isset($_GET["page"])){
 }
 else{
     $page = 1;
-    flash("page is not set in url");
 }
 
 //TODO Fix this so that it returns actual account numbers in the query, not the internal id. Fixed!!!

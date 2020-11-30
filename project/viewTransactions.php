@@ -53,12 +53,12 @@ if($check) {
         $check = false;
     }
 
-    /*
+
     for($i=0;$i<$numLinks;$i++){
         $y = $i + 1;
         echo '<a href="viewTransactions.php?id='.$transId.'?start='.$i.'">'.$y.'</a>';
     }
-    */
+
 
 }
 
@@ -182,13 +182,13 @@ require(__DIR__ . "/partials/flash.php");
             <nav aria-label="Filtered">
                 <ul class="pagination justify-content-center">
                     <li class="page-item <?php echo ($page-1) < 1?"disabled":"";?>">
-                        <a class="page-link" href="?page=<?php echo $page-1;?>" tabindex="-1">Previous</a>
+                        <a class="page-link" href="?id=<?php echo $transId;?>?page=<?php echo $page-1;?>" tabindex="-1">Previous</a>
                     </li>
                     <?php for($i = 0; $i < $numLinks; $i++):?>
-                        <li class="page-item <?php echo ($page-1) == $i?"active":"";?>"><a class="page-link" href="?page=<?php echo ($i+1);?>"><?php echo ($i+1);?></a></li>
+                        <li class="page-item <?php echo ($page-1) == $i?"active":"";?>"><a class="page-link" href="?id=<?php echo $transId;?>?page=<?php echo ($i+1);?>"><?php echo ($i+1);?></a></li>
                     <?php endfor; ?>
                     <li class="page-item <?php echo ($page+1) >= $numLinks?"disabled":"";?>">
-                        <a class="page-link" href="?page=<?php echo $page+1;?>">Next</a>
+                        <a class="page-link" href="?id=<?php echo $transId;?>?page=<?php echo $page+1;?>">Next</a>
                     </li>
                 </ul>
             </nav>

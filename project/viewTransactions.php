@@ -119,13 +119,19 @@ if($check) {
         $type = $_POST["action_type"];
         $results = [];
 
+        //$stmt->bindValue(":memo", $memo, PDO::PARAM_STR);
+
         $startDate = (String)$startDate . ' 00:00:00';
         $endDate = (String)$endDate . ' 00:00:00';
 
         echo $endDate;
 
-        $stmt = $db->prepare("SELECT act_src_id, Accounts.id, Accounts.account_number, amount, action_type, memo FROM Transactions JOIN Accounts on Accounts.id = Transactions.act_src_id WHERE act_src_id =:id AND action_type=:action_type AND created BETWEEN $startDate AND $endDate LIMIT 10");
-        $r = $stmt->execute([":id" => $transId, ":action_type" => $type]);
+        $stmt = $db->prepare("SELECT act_src_id, Accounts.id, Accounts.account_number, amount, action_type, memo FROM Transactions JOIN Accounts on Accounts.id = Transactions.act_src_id WHERE act_src_id =:id AND action_type=:action_type AND created BETWEEN :startDate AND :endDate LIMIT 10");
+        $stmt->bindValue(":startDate", $startDate, PDO::PARAM_STR);
+        $stmt->bindValue(":endDate", $endDate, PDO::PARAM_STR);
+        $stmt->bindValue(":action_type", $type, PDO::PARAM_STR);
+        $stmt->bindValue(":id", $transId, PDO::PARAM_INT);
+        $r = $stmt->execute();
         if ($r){
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }

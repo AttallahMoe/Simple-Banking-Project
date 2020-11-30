@@ -18,11 +18,15 @@ else{
     flash("Id is not set in url");
 }
 
-if(isset($_GET["page"])){
-    $page = $_GET["page"];
-}
-else{
-    $page = 1;
+$page = 1;
+
+if(isset($_GET["page"])) {
+    try {
+        $page = (int)$_GET["page"];
+    }
+    catch (Exception $e) {
+
+    }
 }
 
 //TODO Fix this so that it returns actual account numbers in the query, not the internal id. Fixed!!!

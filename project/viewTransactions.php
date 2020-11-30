@@ -52,13 +52,6 @@ if($check) {
         $check = false;
     }
 
-
-    for($i=0;$i<$numLinks;$i++){
-        $y = $i + 1;
-        echo '<a href="viewTransactions.php?id='.$transId.'?start='.$i.'">'.$y.'</a>';
-    }
-
-
 }
 
 ?>

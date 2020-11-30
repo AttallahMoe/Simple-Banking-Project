@@ -123,7 +123,7 @@ if($check) {
 
         echo $endDate;
 
-        $stmt = $db->prepare("SELECT act_src_id, Accounts.id, Accounts.account_number, amount, action_type, memo FROM Transactions JOIN Accounts on Accounts.id = Transactions.act_dest_id WHERE act_src_id =:id AND action_type=:action_type AND created BETWEEN $startDate AND $endDate LIMIT 10");
+        $stmt = $db->prepare("SELECT act_src_id, Accounts.id, Accounts.account_number, amount, action_type, memo FROM Transactions JOIN Accounts on Accounts.id = Transactions.act_src_id WHERE act_src_id =:id AND action_type=:action_type AND created BETWEEN $startDate AND $endDate LIMIT 10");
         $r = $stmt->execute([":id" => $transId, ":action_type" => $type]);
         if ($r){
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);

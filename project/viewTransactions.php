@@ -34,7 +34,7 @@ if($check) {
     $db = getDB();
 
     //TODO pageination
-    $numPerPage = 5;
+    $numPerPage = 1;
     $numRecords = 0;
 
     $stmt = $db->prepare("SELECT COUNT(act_src_id) FROM Transactions WHERE id=:id");
@@ -188,5 +188,5 @@ require(__DIR__ . "/partials/flash.php");
             <?php else: ?>
                 <p>No Results</p>
             <?php endif; ?>
-            
+
         </div>

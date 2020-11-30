@@ -18,11 +18,11 @@ else{
     flash("Id is not set in url");
 }
 
-if(isset($_GET["start"])){
-    $page = $_GET["start"];
+if(isset($_GET["page"])){
+    $page = $_GET["page"];
 }
 else{
-    $page = 0;
+    $page = 1;
     flash("page is not set in url");
 }
 
@@ -40,9 +40,7 @@ if($check) {
 
     $numRecords = (int)$numRecords;
     $numLinks = ceil($numRecords/$numPerPage); //gets number of links to be created
-    //$page = $_GET['start'];
-    //if(!$page) $page=0;
-    $start = $page * $numPerPage;
+    $offset = ($page-1) * $numPerPage;
 
     $stmt = $db->prepare("SELECT act_src_id, Accounts.id, Accounts.account_number, amount, action_type, memo FROM Transactions JOIN Accounts on Accounts.id = Transactions.act_dest_id WHERE act_src_id =:id LIMIT 10");
     $r = $stmt->execute([":id" => $transId]);
@@ -55,10 +53,12 @@ if($check) {
         $check = false;
     }
 
+    /*
     for($i=0;$i<$numLinks;$i++){
         $y = $i + 1;
         echo '<a href="viewTransactions.php?id='.$transId.'?start='.$i.'">'.$y.'</a>';
     }
+    */
 
 }
 
@@ -129,7 +129,7 @@ if($check) {
         $stmt->bindValue(":endDate", $endDate, PDO::PARAM_STR);
         $stmt->bindValue(":action_type", $type, PDO::PARAM_STR);
         $stmt->bindValue(":id", $transId, PDO::PARAM_INT);
-        $stmt->bindValue(":offset", $page, PDO::PARAM_INT);
+        $stmt->bindValue(":offset", $offset, PDO::PARAM_INT);
         $stmt->bindValue(":count", $numPerPage, PDO::PARAM_INT);
         $r = $stmt->execute();
         if ($r){
@@ -177,4 +177,19 @@ require(__DIR__ . "/partials/flash.php");
             <?php else: ?>
                 <p>No Results</p>
             <?php endif; ?>
+            </div>
+            </div>
+            <nav aria-label="Filtered">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item <?php echo ($page-1) < 1?"disabled":"";?>">
+                        <a class="page-link" href="?page=<?php echo $page-1;?>" tabindex="-1">Previous</a>
+                    </li>
+                    <?php for($i = 0; $i < $numLinks; $i++):?>
+                        <li class="page-item <?php echo ($page-1) == $i?"active":"";?>"><a class="page-link" href="?page=<?php echo ($i+1);?>"><?php echo ($i+1);?></a></li>
+                    <?php endfor; ?>
+                    <li class="page-item <?php echo ($page+1) >= $numLinks?"disabled":"";?>">
+                        <a class="page-link" href="?page=<?php echo $page+1;?>">Next</a>
+                    </li>
+                </ul>
+            </nav>
         </div>

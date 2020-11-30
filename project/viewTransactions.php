@@ -135,6 +135,8 @@ if($check) {
 
 
     }
+
+require(__DIR__ . "/partials/flash.php");
 ?>
 
     <div class="bodyMain">

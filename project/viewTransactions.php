@@ -149,6 +149,21 @@ require(__DIR__ . "/partials/flash.php");
             <?php if(count($results) > 0 && isset($_POST["save"])): ?>
                 <h1><strong>Filtered Transactions</strong></h1>
                 <div class="list-group">
+                </div>
+        </div>
+        <nav aria-label="Filtered">
+            <ul class="pagination justify-content-center">
+                <li class="page-item <?php echo ($page-1) < 1?"disabled":"";?>">
+                    <a class="page-link" href="?id=<?php echo $transId;?>?page=<?php echo $page-1;?>" tabindex="-1">Previous</a>
+                </li>
+                <?php for($i = 0; $i < $numLinks; $i++):?>
+                    <li class="page-item <?php echo ($page-1) == $i?"active":"";?>"><a class="page-link" href="?id=<?php echo $transId;?>?page=<?php echo ($i+1);?>"><?php echo ($i+1);?></a></li>
+                <?php endfor; ?>
+                <li class="page-item <?php echo ($page+1) >= $numLinks?"disabled":"";?>">
+                    <a class="page-link" href="?id=<?php echo $transId;?>?page=<?php echo $page+1;?>">Next</a>
+                </li>
+            </ul>
+        </nav>
                     <?php foreach ($results as $r): ?>
                         <div class="list-group-item">
                             <div>
@@ -168,26 +183,10 @@ require(__DIR__ . "/partials/flash.php");
                                 <div><?php safer_echo($r["memo"]); ?></div>
                             </div>
                         </div>
-                </div>
-        </div>
-        <nav aria-label="Filtered">
-            <ul class="pagination justify-content-center">
-                <li class="page-item <?php echo ($page-1) < 1?"disabled":"";?>">
-                    <a class="page-link" href="?id=<?php echo $transId;?>?page=<?php echo $page-1;?>" tabindex="-1">Previous</a>
-                </li>
-                <?php for($i = 0; $i < $numLinks; $i++):?>
-                    <li class="page-item <?php echo ($page-1) == $i?"active":"";?>"><a class="page-link" href="?id=<?php echo $transId;?>?page=<?php echo ($i+1);?>"><?php echo ($i+1);?></a></li>
-                <?php endfor; ?>
-                <li class="page-item <?php echo ($page+1) >= $numLinks?"disabled":"";?>">
-                    <a class="page-link" href="?id=<?php echo $transId;?>?page=<?php echo $page+1;?>">Next</a>
-                </li>
-            </ul>
-        </nav>
                     <?php endforeach; ?>
                 </div>
             <?php else: ?>
                 <p>No Results</p>
             <?php endif; ?>
-            </div>
-            </div>
+            
         </div>

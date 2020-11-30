@@ -130,7 +130,8 @@ if($check) {
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
         else{
-            flash("There was a problem fetching the results.");
+            $e = $stmt->errorInfo();
+            flash("There was a problem fetching the results." . var_export($e, true));
             $check = false;
         }
 

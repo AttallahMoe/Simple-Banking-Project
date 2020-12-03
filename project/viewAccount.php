@@ -35,7 +35,7 @@ if ($check) {
                         <div><?php getAccount($r["account_type"]); ?></div>
                     </div>
                     <div>
-                        <div>APY (If Applicable):</div>
+                        <div>Monthly APY:</div>
                         <div><?php if($r["account_type"] == "saving") {safer_echo($r["apy"]);}?></div>
                     </div>
                     <div>

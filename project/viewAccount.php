@@ -37,12 +37,12 @@ if ($check) {
                     <?php if($r["account_type"] == "saving"):?>
                     <div>
                         <div>Monthly APY:</div>
-                        <div><?php safer_echo($r["apy"]);?></div>
+                        <div><?php "%" . safer_echo($r["apy"]);?></div>
                     </div>
                     <?php endif; ?>
                     <div>
                         <div>Balance</div>
-                        <div><?php safer_echo($r["balance"]); ?></div>
+                        <div><?php "$" . safer_echo($r["balance"]); ?></div>
                     </div>
                         <div>
                             <a href="viewTransactions.php?id=<?php safer_echo($r['id']); ?>">View Transaction History</a>

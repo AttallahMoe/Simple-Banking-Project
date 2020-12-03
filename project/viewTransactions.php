@@ -75,7 +75,9 @@ if($check) {
     </select>
     <input type="submit" name="save" value="Filter" />
 </form>
+<?php
 
+/*
 <div class="bodyMain">
     <h1><strong>List Transactions</strong></h1>
 
@@ -107,7 +109,8 @@ if($check) {
             <div style="display:none"></div>
         <?php endif; ?>
     </div>
-
+    */
+?>
 <?php
     if(isset($_POST["save"])){
         $startDate = $_POST["dateStart"];
@@ -143,7 +146,7 @@ if($check) {
 require(__DIR__ . "/partials/flash.php");
 ?>
 
-    <div class="bodyMain">
+    <div class="BodyMain">
 
         <div class="results">
             <?php if(count($results) > 0 && isset($_POST["save"])): ?>

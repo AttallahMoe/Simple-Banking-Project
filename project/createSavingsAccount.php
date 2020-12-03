@@ -148,10 +148,9 @@ if(isset($_POST["save"])){
         }
     }
 
-    header("Location: viewAccount.php");
 
 
 }
-
+//header("Location: viewAccount.php");
 ?>
 <?php require(__DIR__ . "/partials/flash.php");?>

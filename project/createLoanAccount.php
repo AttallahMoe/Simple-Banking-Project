@@ -17,7 +17,7 @@ $accs = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <?php endforeach; ?>
     </select>
     <input type="number" name="balance" min="500.00" placeholder="Loan Amount"/>
-    <input type="number" name="apy" min="1.50" max="2.99" placeholder="APY"
+    <input type="number" name="apy" min="1.50" max="2.99" placeholder="APY"/>
     <input type="submit" name="save" value="Create"/>
 </form>
 

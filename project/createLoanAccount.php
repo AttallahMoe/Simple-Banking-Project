@@ -1,8 +1,23 @@
 <?php require_once(__DIR__ . "/partials/nav.php"); ?>
+<?php
+$db = getDB();
+$user = get_user_id();
+$stmt = $db->prepare("SELECT account_number from Accounts WHERE user_id=:id LIMIT 10");
+$r = $stmt->execute([":id" => $user]);
+$accs = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
 
-<h1><strong>Open Savings Account</strong></h1>
-<form method="POST">
-    <input type="number" name="balance" min="5.00" placeholder="Starting Balance"/>
+<h3>Create Loan</h3>
+<form method = "POST">
+    <label>Choose Destination Account</label>
+    <select name="account_source" placeholder="Account Source">
+        <?php foreach ($accs as $acc): ?>
+            <option value="<?php safer_echo($acc["account_number"]); ?>"
+            ><?php safer_echo($acc["account_number"]); ?></option>
+        <?php endforeach; ?>
+    </select>
+    <input type="number" name="balance" min="500.00" placeholder="Loan Amount"/>
+    <input type="number" name="apy" min="1.50" max="2.99" placeholder="APY"
     <input type="submit" name="save" value="Create"/>
 </form>
 
@@ -25,8 +40,27 @@ if(isset($_POST["save"])){
 
     $accNumRec = new SplFixedArray(1);
     $balance = $_POST["balance"];
-    $account_type = "saving";
-    $apy = 0.03;
+    $account_type = "loan";
+    $apy = $_POST["APY"];
+    $externalAccount = $_POST["account_source"]; //must get id from account number
+
+    //getting external account info for loan to be deposited
+
+
+    $resultsExternal = [];
+    $stmt = $db->prepare("SELECT id, balance from Accounts WHERE account_number=:src");
+    $r = $stmt->execute([":src" => $externalAccount]);
+    $resultsExternal = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    $srcExternalBalance = $resultsExternal["balance"];
+    $srcIDExternal = $resultsExternal["id"];
+
+
+    if (!$r) {
+        $e = $stmt->errorInfo();
+        flash("Error accessing the Source Account Balance: " . var_export($e, true));
+        $check = false;
+    }
 
     //creating and storing account number
 
@@ -50,7 +84,7 @@ if(isset($_POST["save"])){
     }
     else{
         $e = $stmt->errorInfo();
-        flash("Error creating new Savings Account: " . var_export($e, true));
+        flash("Error creating new Loan Account: " . var_export($e, true));
         $check = false;
     }
     ?>
@@ -75,7 +109,7 @@ if(isset($_POST["save"])){
         $worldBalance = (int)$worldBalance;
         $balance = (int)$balance;
 
-        $updateWorldBalance = $worldBalance - $balance;
+        $updateWorldBalance = $worldBalance - ($balance);
 
         $stmt = $db->prepare("UPDATE Accounts set balance=:updateWorldBalance WHERE id=:id");
         $r = $stmt->execute([
@@ -89,11 +123,11 @@ if(isset($_POST["save"])){
             $check = false;
         }
 
-        //creating transaction between new account and world account
+        //creating transaction between new loan account and world account
 
         if($check){
-            $action_type = "deposit";
-            $memo = "N.S.A.C";
+            $action_type = "loan";
+            $memo = "N.L.A.C";
             $worldAmount = $balance * -1;
             $result = [];
 
@@ -145,8 +179,32 @@ if(isset($_POST["save"])){
                     $check = false;
                 }
             }
+
+            $memoLoan = "loan fund";
+            $srcExternalBalance = (int)$srcExternalBalance;
+
+            $srcExternalExpected = $srcExternalBalance + ($balance);
+
+            //creating transaction between loan account and source destination
+            if($check) {
+                $stmt = $db->prepare("INSERT INTO Transactions (act_src_id, act_dest_id, action_type, amount, memo, expected_total) VALUES(:src, :dest, :type, :amount,:memo, :expected)");
+                $r = $stmt->execute([
+                    ":src" => $srcIDExternal,
+                    ":dest" => $sourceID,
+                    ":type" => $action_type,
+                    ":amount" => $balance,
+                    ":memo" => $memoLoan,
+                    ":expected" => $srcExternalExpected
+                ]);
+                if (!$r) {
+                    $e = $stmt->errorInfo();
+                    flash("Failed to process transaction for Source Account: " . var_export($e, true));
+                    $check = false;
+                }
+            }
+
         }
-        header("Location: viewAccount.php");
+        //header("Location: viewAccount.php");
     }
 
 

@@ -41,7 +41,7 @@ if(isset($_POST["save"])){
     $accNumRec = new SplFixedArray(1);
     $balance = $_POST["balance"];
     $account_type = "loan";
-    $apy = $_POST["APY"];
+    $apy = $_POST["apy"];
     $externalAccount = $_POST["account_source"]; //must get id from account number
 
     //getting external account info for loan to be deposited
@@ -185,12 +185,18 @@ if(isset($_POST["save"])){
 
             $srcExternalExpected = $srcExternalBalance + ($balance);
 
+            $stmt = $db->prepare("UPDATE Accounts set balance=:srcExternalExpected WHERE id=:id");
+            $r = $stmt->execute([
+                ":srcExternalExpected" => $srcExternalExpected,
+                ":id" => $srcIDExternal
+            ]);
+
             //creating transaction between loan account and source destination
             if($check) {
                 $stmt = $db->prepare("INSERT INTO Transactions (act_src_id, act_dest_id, action_type, amount, memo, expected_total) VALUES(:src, :dest, :type, :amount,:memo, :expected)");
                 $r = $stmt->execute([
-                    ":src" => $srcIDExternal,
-                    ":dest" => $sourceID,
+                    ":src" => $sourceID,
+                    ":dest" => $srcIDExternal,
                     ":type" => $action_type,
                     ":amount" => $balance,
                     ":memo" => $memoLoan,

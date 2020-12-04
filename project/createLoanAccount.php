@@ -17,7 +17,7 @@ $accs = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <?php endforeach; ?>
     </select>
     <input type="number" name="balance" min="500.00" placeholder="Loan Amount"/>
-    <input type="number" name="apy" min="1.50" max="2.50" placeholder="APY"/>
+    <input type="number" name="apy" min="2" max="5" placeholder="APY"/>
     <input type="submit" name="save" value="Create"/>
 </form>
 
@@ -41,7 +41,11 @@ if(isset($_POST["save"])){
     $accNumRec = new SplFixedArray(1);
     $balance = $_POST["balance"];
     $account_type = "loan";
+
     $apy = $_POST["apy"];
+    $apy = (int)$apy;
+    $apy2 = $apy/100;
+
     $externalAccount = $_POST["account_source"]; //must get id from account number
 
     //getting external account info for loan to be deposited
@@ -76,7 +80,7 @@ if(isset($_POST["save"])){
         ":account_number" => $accNumFinal,
         ":account_type" => $account_type,
         ":balance" => $balance,
-        ":apy" => $apy,
+        ":apy" => $apy2,
         ":user" => $user
     ]);
     if($r){

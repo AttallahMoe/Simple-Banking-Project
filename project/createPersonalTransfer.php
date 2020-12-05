@@ -8,7 +8,7 @@ if (!is_logged_in()) {
 }
 $db = getDB();
 $user = get_user_id();
-$stmt = $db->prepare("SELECT account_number from Accounts WHERE user_id=:id LIMIT 10");
+$stmt = $db->prepare("SELECT account_number, account_type from Accounts WHERE user_id=:id LIMIT 10");
 $r = $stmt->execute([":id" => $user]);
 $accs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
@@ -18,8 +18,10 @@ $accs = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <label>Choose Source Account</label>
         <select name="account_source" placeholder="Account Source">
             <?php foreach ($accs as $acc): ?>
-                <option value="<?php safer_echo($acc["account_number"]); ?>"
-                ><?php safer_echo($acc["account_number"]); ?></option>
+                    <?php if($acc["account_type"] != "loan"):?>
+                    <option value="<?php safer_echo($acc["account_number"]); ?>"
+                    ><?php safer_echo($acc["account_number"]); ?></option>
+                    <?php endif ?>
             <?php endforeach; ?>
         </select>
         <label>Choose Destination Account</label>
@@ -71,12 +73,13 @@ if(isset($_POST["save"])){
 
     //dest account balance
     $destResults = [];
-    $stmt = $db->prepare("SELECT id, balance from Accounts WHERE account_number=:dest");
+    $stmt = $db->prepare("SELECT id, balance, account_type from Accounts WHERE account_number=:dest");
     $r = $stmt->execute([":dest" => $dest]);
     $destResults = $stmt->fetch(PDO::FETCH_ASSOC);
 
     $destBalance = $destResults["balance"];
     $destID = $destResults["id"];
+    $destType = $destResults["account_type"];
 
     if (!$r){
         $e = $stmt->errorInfo();
@@ -99,8 +102,16 @@ if(isset($_POST["save"])){
             $srcExpect = $srcBalance - $amount;
             $srcAmount = $amount * -1;
 
-            $destExpect = $destBalance + $amount;
-            $destAmount = $amount;
+            //will not add to balance of loan account only savings and and checking accounts
+            if($destType != "loan") {
+                $destExpect = $destBalance + $amount;
+                $destAmount = $amount;
+            }
+            //modified to take money out of loan account to lower the balance.
+            else{
+                $destExpect = $destBalance - $amount;
+                $destAmount = $amount;
+            }
         }
     }
 

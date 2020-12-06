@@ -3,7 +3,7 @@ require_once (__DIR__ . "/partials/nav.php");
 
 $db = getDB();
 $user = get_user_id();
-$stmt = $db->prepare("SELECT account_number from Accounts WHERE user_id=:id AND apy != NULL LIMIT 10");
+$stmt = $db->prepare("SELECT account_number from Accounts WHERE apy != NULL LIMIT 10");
 $r = $stmt->execute([":id" => $user]);
 $accs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

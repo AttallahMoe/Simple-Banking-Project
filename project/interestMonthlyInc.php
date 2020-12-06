@@ -2,9 +2,12 @@
 require_once (__DIR__ . "/partials/nav.php");
 
 $db = getDB();
-$user = get_user_id();
-$stmt = $db->prepare("SELECT account_number from Accounts WHERE apy < 0 LIMIT 10");
-$r = $stmt->execute(/*[":id" => $user]*/);
+$type1 = "loan";
+$type2 = "saving";
+$stmt = $db->prepare("SELECT account_number from Accounts WHERE account_type=:type1 OR account_type=:type2 LIMIT 10");
+$r = $stmt->execute([":type1" => $type1,
+                     ":type2" => $type2
+                    ]);
 $accs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 if (!$r) {

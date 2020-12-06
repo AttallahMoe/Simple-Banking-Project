@@ -69,9 +69,6 @@ if(isset($_POST["save"]) && $check == true){
 
     $interestCalc = $loanBalance * $loanInterest;
     $loanExpect = $loanBalance + $interestCalc;
-    echo $loanExpect . "exptected new balance";
-    echo $interestCalc . "calculation of balance multiped by apy";
-    echo $loanInterest . "interest apy";
 
     if($check){
         $stmt = $db->prepare("UPDATE Accounts set balance=:loanBalance WHERE id=:id");

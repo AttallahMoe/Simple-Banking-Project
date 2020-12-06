@@ -64,7 +64,7 @@ if(isset($_POST["save"]) && $check == true){
     $loanID = $results["id"];
     $loanInterest = $results["apy"];
 
-    $loanInterest = (int)$loanInterest;
+    $loanInterest = (float)$loanInterest;
     $loanBalance = (int)$loanBalance;
 
     $interestCalc = $loanBalance * $loanInterest;

@@ -17,7 +17,7 @@ if (!$r) {
 }
 ?>
 
-<form>
+<form method="POST">
     <h1><strong>Interest implementer</strong></h1>
     <label>Choose Account</label>
     <select name="account_source" placeholder="Account Source">

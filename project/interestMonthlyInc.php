@@ -87,6 +87,7 @@ if(isset($_POST["save"]) && $check == true){
     }
 }
 else{
+    $e = $stmt->errorInfo();
     flash("something is broken" . var_export($e, true));
 }
 

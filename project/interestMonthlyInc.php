@@ -69,6 +69,7 @@ if(isset($_POST["save"]) && $check == true){
 
     $interestCalc = $loanBalance * $loanInterest;
     $loanExpect = $loanBalance + $interestCalc;
+    echo $loanExpect;
 
     if($check){
         $stmt = $db->prepare("UPDATE Accounts set balance=:loanBalance WHERE id=:id");

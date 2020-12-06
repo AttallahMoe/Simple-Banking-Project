@@ -7,6 +7,11 @@ $stmt = $db->prepare("SELECT account_number from Accounts WHERE apy != NULL LIMI
 $r = $stmt->execute(/*[":id" => $user]*/);
 $accs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+if (!$r) {
+    $e = $stmt->errorInfo();
+    flash("Error accessing accounts: " . var_export($e, true));
+    $check = false;
+
 ?>
 
 <form>
@@ -31,7 +36,7 @@ if (!has_role("Admin")) {
     die(header("Location: login.php"));
 }
 
-if(isset($_POST["save"])){
+if(isset($_POST["save"]) && $check == true){
 
     $memo = "Interest";
     $account = $_POST["account_source"];

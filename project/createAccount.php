@@ -6,6 +6,12 @@
     <input type="submit" name="save" value="Create"/>
 </form>
 
+<div class="list-group">
+    <div>
+        <a href="createSavingsAccount.php">Create Savings Account</a>
+        <a href="createLoanAccount.php">Create Loan</a>
+    </div>
+
 <?php
 
 if (!is_logged_in()) {
@@ -153,3 +159,5 @@ if(isset($_POST["save"])){
 
 ?>
 <?php require(__DIR__ . "/partials/flash.php");?>
+
+

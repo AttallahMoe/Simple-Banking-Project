@@ -214,7 +214,7 @@ if(isset($_POST["save"])){
             }
 
         }
-        //header("Location: viewAccount.php");
+        header("Location: viewAccount.php");
     }
 
 

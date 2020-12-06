@@ -82,9 +82,6 @@ if(isset($_POST["save"]) && $check == true){
             $check = false;
         }
     }
-    if($check){
-        header("Location: viewAccount.php");
-    }
 }
 
 

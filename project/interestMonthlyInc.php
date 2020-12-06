@@ -83,6 +83,9 @@ if(isset($_POST["save"]) && $check == true){
         }
     }
 }
+else{
+    flash("something is broken" . var_export($e, true));
+}
 
 
 require(__DIR__ . "/partials/flash.php");

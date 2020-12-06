@@ -53,15 +53,18 @@ if(isset($_POST["save"]) && $check == true){
     $r = $stmt->execute([":src" => $account]);
     $results = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    $loanBalance = $results["balance"];
-    $loanID = $results["id"];
-    $loanInterest = $results["apy"];
-
     if (!$r) {
         $e = $stmt->errorInfo();
         flash("Error accessing the Source Account Balance: " . var_export($e, true));
         $check = false;
     }
+
+    $loanBalance = $results["balance"];
+    $loanID = $results["id"];
+    $loanInterest = $results["apy"];
+
+    $loanInterest = (int)$loanInterest;
+    $loanBalance = (int)$loanBalance;
 
     $interestCalc = $loanBalance * $loanInterest;
     $loanExpect = $loanBalance + $interestCalc;

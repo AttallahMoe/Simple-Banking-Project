@@ -1,6 +1,7 @@
 <?php
 require_once (__DIR__ . "/partials/nav.php");
 
+$check = true;
 $db = getDB();
 $type1 = "loan";
 $type2 = "saving";
@@ -39,7 +40,7 @@ if (!has_role("Admin")) {
     die(header("Location: login.php"));
 }
 
-if(isset($_POST["save"])){
+if(isset($_POST["save"]) && $check == true){
 
     $memo = "Interest";
     $account = $_POST["account_source"];

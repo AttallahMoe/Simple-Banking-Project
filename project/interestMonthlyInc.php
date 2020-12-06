@@ -11,7 +11,7 @@ if (!$r) {
     $e = $stmt->errorInfo();
     flash("Error accessing accounts: " . var_export($e, true));
     $check = false;
-
+}
 ?>
 
 <form>

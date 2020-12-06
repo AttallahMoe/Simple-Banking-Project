@@ -39,7 +39,7 @@ if (!has_role("Admin")) {
     die(header("Location: login.php"));
 }
 
-if(isset($_POST["save"]) && $check == true){
+if(isset($_POST["save"])){
 
     $memo = "Interest";
     $account = $_POST["account_source"];

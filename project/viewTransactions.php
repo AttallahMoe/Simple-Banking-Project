@@ -64,6 +64,9 @@ if($check) {
 }
 
 ?>
+<?php
+
+/*
 <form method="POST">
     <label><strong>Filter Transactions</strong></label>
     <br>
@@ -112,7 +115,8 @@ if($check) {
             <div style="display:none"></div>
         <?php endif; ?>
     </div>
-
+*/
+    ?>
 <?php
     if(isset($_POST["save"])){
         $startDate = $_POST["dateStart"];

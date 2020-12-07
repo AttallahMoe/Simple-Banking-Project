@@ -64,9 +64,8 @@ if($check) {
 }
 
 ?>
-<?php
 
-/*
+
 <form method="POST">
     <label><strong>Filter Transactions</strong></label>
     <br>
@@ -83,7 +82,8 @@ if($check) {
     </select>
     <input type="submit" name="save" value="Filter" />
 </form>
-
+<?php
+/*
 <div class="bodyMain">
     <h1><strong>List Transactions</strong></h1>
 
@@ -115,6 +115,7 @@ if($check) {
             <div style="display:none"></div>
         <?php endif; ?>
     </div>
+
 */
     ?>
 <?php

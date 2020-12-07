@@ -42,7 +42,7 @@ if($check) {
     $r = $stmt->execute([":id" => $transId]);
     $resultPage = $stmt->fetch(PDO::FETCH_ASSOC);
     if($resultPage){
-        $numRecords = (int)$numRecords["total"];
+        $numRecords = (int)$resultPage["total"];
     }
 
     $numRecords = (int)$numRecords;

@@ -37,7 +37,7 @@ if($check) {
     $numPerPage = 1;
     $numRecords = 0;
 
-    $stmt = $db->prepare("SELECT COUNT(act_src_id) FROM Transactions WHERE act_src_id=:id");
+    $stmt = $db->prepare("SELECT COUNT(*) FROM Transactions WHERE act_src_id=:id");
     $r = $stmt->execute([":id" => $transId]);
     $numRecords = $stmt->fetch(PDO::FETCH_ASSOC);
 

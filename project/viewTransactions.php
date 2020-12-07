@@ -36,10 +36,14 @@ if($check) {
     //TODO pageination
     $numPerPage = 1;
     $numRecords = 0;
+    $resultPage = [];
 
-    $stmt = $db->prepare("SELECT COUNT(*) FROM Transactions WHERE act_src_id=:id");
+    $stmt = $db->prepare("SELECT COUNT(*) AS total FROM Transactions WHERE act_src_id=:id");
     $r = $stmt->execute([":id" => $transId]);
-    $numRecords = $stmt->fetch(PDO::FETCH_ASSOC);
+    $resultPage = $stmt->fetch(PDO::FETCH_ASSOC);
+    if($resultPage){
+        $numRecords = (int)$numRecords["total"];
+    }
 
     $numRecords = (int)$numRecords;
     echo $numRecords;

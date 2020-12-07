@@ -37,7 +37,7 @@ if($check) {
     $numPerPage = 5;
     $numRecords = 0;
 
-    $stmt = $db->prepare("SELECT COUNT(act_src_id) FROM Transactions WHERE id=:id");
+    $stmt = $db->prepare("SELECT COUNT(act_src_id) FROM Transactions WHERE act_src_id=:id");
     $r = $stmt->execute([":id" => $transId]);
     $numRecords = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -154,13 +154,13 @@ require(__DIR__ . "/partials/flash.php");
         <nav aria-label="Filtered">
             <ul class="pagination justify-content-center">
                 <li class="page-item <?php echo ($page-1) < 1?"disabled":"";?>">
-                    <a class="page-link" href="?id=<?php echo $transId;?>?page=<?php echo $page-1;?>" tabindex="-1">Previous</a>
+                    <a class="page-link" href="?id=<?php echo $transId;?>&page=<?php echo $page-1;?>" tabindex="-1">Previous</a>
                 </li>
                 <?php for($i = 0; $i < $numLinks; $i++):?>
-                    <li class="page-item <?php echo ($page-1) == $i?"active":"";?>"><a class="page-link" href="?id=<?php echo $transId;?>?page=<?php echo ($i+1);?>"><?php echo ($i+1);?></a></li>
+                    <li class="page-item <?php echo ($page-1) == $i?"active":"";?>"><a class="page-link" href="?id=<?php echo $transId;?>&page=<?php echo ($i+1);?>"><?php echo ($i+1);?></a></li>
                 <?php endfor; ?>
                 <li class="page-item <?php echo ($page+1) >= $numLinks?"disabled":"";?>">
-                    <a class="page-link" href="?id=<?php echo $transId;?>?page=<?php echo $page+1;?>">Next</a>
+                    <a class="page-link" href="?id=<?php echo $transId;?>&page=<?php echo $page+1;?>">Next</a>
                 </li>
             </ul>
         </nav>

@@ -1,6 +1,6 @@
 <?php
 require_once (__DIR__ . "/partials/nav.php");
-
+session_start();
 if (!is_logged_in()) {
     //this will redirect to login and kill the rest of this script (prevent it from executing)
     flash("You must be logged in to access this page");
@@ -126,6 +126,9 @@ if($check) {
 
         $startDate = (String)$startDate . ' 00:00:00';
         $endDate = (String)$endDate . ' 00:00:00';
+
+        $_SESSION["dateStart"] = $startDate;
+        $_SESSION["dateTo"] = $endDate;
 
         $stmt = $db->prepare("SELECT act_src_id, Accounts.id, Accounts.account_number, amount, action_type, memo FROM Transactions JOIN Accounts on Accounts.id = Transactions.act_src_id WHERE act_src_id =:id AND action_type=:action_type AND created BETWEEN :startDate AND :endDate LIMIT :offset, :count");
         $stmt->bindValue(":startDate", $startDate, PDO::PARAM_STR);

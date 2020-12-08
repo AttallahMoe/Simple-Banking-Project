@@ -9,6 +9,7 @@ if (!is_logged_in()) {
 
 $check = true;
 $results = [];
+$results1 = [];
 
 if(isset($_GET["id"])){
     $transId = $_GET["id"];
@@ -53,7 +54,7 @@ if($check) {
     $stmt = $db->prepare("SELECT act_src_id, Accounts.id, Accounts.account_number, amount, action_type, memo FROM Transactions JOIN Accounts on Accounts.id = Transactions.act_dest_id WHERE act_src_id =:id LIMIT 10");
     $r = $stmt->execute([":id" => $transId]);
     if ($r){
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $results1 = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     else{
         $e = $stmt->errorInfo();
@@ -90,7 +91,7 @@ if($check) {
     <div class="results">
         <?php if(count($results) > 0 && !isset($_POST["save"])): ?>
             <div class="list-group">
-                <?php foreach ($results as $r): ?>
+                <?php foreach ($results1 as $r): ?>
                     <div class="list-group-item">
                         <div>
                             <div>Destination Account ID:</div>
@@ -123,7 +124,6 @@ if($check) {
         $startDate = $_POST["dateStart"];
         $endDate = $_POST["dateTo"];
         $type = $_POST["action_type"];
-        $results = [];
 
         //$stmt->bindValue(":memo", $memo, PDO::PARAM_STR);
 

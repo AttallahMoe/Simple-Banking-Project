@@ -35,7 +35,7 @@ if($check) {
     $db = getDB();
 
     //TODO pageination
-    $numPerPage = 1;
+    $numPerPage = 5;
     $numRecords = 0;
     $resultPage = [];
 
@@ -83,8 +83,7 @@ if($check) {
     </select>
     <input type="submit" name="save" value="Filter" />
 </form>
-<?php
-/*
+
 <div class="bodyMain">
     <h1><strong>List Transactions</strong></h1>
 
@@ -117,8 +116,6 @@ if($check) {
         <?php endif; ?>
     </div>
 
-*/
-    ?>
 <?php
     if(isset($_POST["save"])){
         $startDate = $_POST["dateStart"];
@@ -192,7 +189,8 @@ if($check) {
             <a class="page-link" href="?id=<?php echo $transId;?>&page=<?php echo $page-1;?>" tabindex="-1">Previous</a>
         </li>
         <?php for($i = 0; $i < $numLinks; $i++):?>
-            <li class="page-item <?php echo ($page-1) == $i?"active":"";?>"><a class="page-link" href="?id=<?php echo $transId;?>&page=<?php echo ($i+1);?>"><?php echo ($i+1);?></a></li>
+            <li class="page-item <?php echo ($page-1) == $i?"active":"";?>">
+                <a class="page-link" href="?id=<?php echo $transId;?>&page=<?php echo ($i+1);?>"><?php echo ($i+1);?></a></li>
         <?php endfor; ?>
         <li class="page-item <?php echo ($page+1) >= $numLinks?"disabled":"";?>">
             <a class="page-link" href="?id=<?php echo $transId;?>&page=<?php echo $page+1;?>">Next</a>

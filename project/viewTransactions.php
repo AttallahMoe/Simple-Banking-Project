@@ -24,6 +24,7 @@ $page = 1;
 if(isset($_GET["page"])) {
     try {
         $page = (int)$_GET["page"];
+        $_SESSION["page"] = $page;
     }
     catch (Exception $e) {
 
@@ -46,6 +47,7 @@ if($check) {
         $numRecords = (int)$resultPage["total"];
     }
 
+    $page = $_SESSION["page"];
     $numRecords = (int)$numRecords;
     echo $numRecords;
     $numLinks = ceil($numRecords/$numPerPage); //gets number of links to be created

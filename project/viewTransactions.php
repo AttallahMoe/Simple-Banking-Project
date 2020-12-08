@@ -12,6 +12,7 @@ $results1 = [];
 
 if(isset($_GET["id"])){
     $transId = $_GET["id"];
+    $_SESSION["transId"] = $transId;
 }
 else{
     $check = false;
@@ -49,6 +50,10 @@ if($check) {
     echo $numRecords;
     $numLinks = ceil($numRecords/$numPerPage); //gets number of links to be created
     $offset = ($page-1) * $numPerPage;
+
+    //TODO get sessions to work for pagination
+    $_SESSION["offset"] = $offset;
+    $_SESSION["numPerPage"] = $numPerPage;
 
     $stmt = $db->prepare("SELECT act_src_id, Accounts.id, Accounts.account_number, amount, action_type, memo FROM Transactions JOIN Accounts on Accounts.id = Transactions.act_dest_id WHERE act_src_id =:id LIMIT 10");
     $r = $stmt->execute([":id" => $transId]);
@@ -133,7 +138,8 @@ if($check) {
         $_SESSION["dateTo"] = $endDate;
         $_SESSION["action_type"] = $type;
         $_SESSION["save"] = $save;
-
+        //$_SESSION["offset"] = $offset;
+        //$_SESSION["numPerPage"] = $numPerPage;
 
         $stmt = $db->prepare("SELECT act_src_id, Accounts.id, Accounts.account_number, amount, action_type, memo FROM Transactions JOIN Accounts on Accounts.id = Transactions.act_src_id WHERE act_src_id =:id AND action_type=:action_type AND created BETWEEN :startDate AND :endDate LIMIT :offset, :count");
         $stmt->bindValue(":startDate", $startDate, PDO::PARAM_STR);
@@ -160,6 +166,9 @@ if($check) {
             $endDate = $_SESSION["dateTo"];
             $type = $_SESSION["action_type"];
             $save = $_SESSION["save"];
+            $offset = $_SESSION["offset"];
+            $numPerPage = $_SESSION["numPerPage"];
+            $transId = $_SESSION["transId"];
 
 
             $stmt = $db->prepare("SELECT act_src_id, Accounts.id, Accounts.account_number, amount, action_type, memo FROM Transactions JOIN Accounts on Accounts.id = Transactions.act_src_id WHERE act_src_id =:id AND action_type=:action_type AND created BETWEEN :startDate AND :endDate LIMIT :offset, :count");

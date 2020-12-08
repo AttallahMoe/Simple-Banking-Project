@@ -116,12 +116,19 @@ if($check) {
     </div>
 
 <?php
+
+$startDate = $_POST["dateStart"];
+$endDate = $_POST["dateTo"];
+$type = $_POST["action_type"];
+$save = $_POST["save"];    
+
     if(isset($_POST["save"])) {
+        /*
         $startDate = $_POST["dateStart"];
         $endDate = $_POST["dateTo"];
         $type = $_POST["action_type"];
         $save = $_POST["save"];
-
+        */
         //$stmt->bindValue(":memo", $memo, PDO::PARAM_STR);
 
         $startDate = (string)$startDate . ' 00:00:00';

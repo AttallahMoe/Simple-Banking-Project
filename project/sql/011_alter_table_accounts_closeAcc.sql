@@ -1,2 +1,2 @@
 ALTER TABLE Accounts
-    ADD COLUMN closed bit set default "false";
+    ADD COLUMN closed VARCHAR(10) default "false";

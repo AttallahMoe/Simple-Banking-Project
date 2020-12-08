@@ -60,7 +60,7 @@ if (isset($_POST["save"])){
     $closed = "true";
 
     if($check){
-        $stmt = $db->prepare("UPDATE Accounts set close=:closeAcc WHERE id=:id");
+        $stmt = $db->prepare("UPDATE Accounts set closed=:closeAcc WHERE id=:id");
         $r = $stmt->execute([
             ":closeAcc" => $closed,
             ":id" => $sourceID

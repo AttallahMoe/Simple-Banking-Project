@@ -88,7 +88,7 @@ if($check) {
     <h1><strong>List Transactions</strong></h1>
 
     <div class="results">
-        <?php if(count($results) > 0 && !isset($_POST["save"])): ?>
+        <?php if(count($results1) > 0 && !isset($_POST["save"])): ?>
             <div class="list-group">
                 <?php foreach ($results1 as $r): ?>
                     <div class="list-group-item">

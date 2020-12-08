@@ -156,8 +156,8 @@ if($check) {
     <div class="BodyMain">
 
         <div class="results">
-            <?php if(count($results) > 0 && isset($_POST["save"])): ?>
-                <h1><strong>Filtered Transactions</strong></h1>
+            <h1><strong>Filtered Transactions</strong></h1>
+            <?php if(count($results) > 0): ?>
                 <div class="list-group">
                     <?php foreach ($results as $r): ?>
                         <div class="list-group-item">

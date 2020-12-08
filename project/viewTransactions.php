@@ -183,10 +183,9 @@ if($check) {
             <?php else: ?>
                 <p>No Results</p>
             <?php endif; ?>
-
         </div>
     </div>
-</div>
+<div>
 <nav aria-label="Filtered">
     <ul class="pagination justify-content-center">
         <li class="page-item <?php echo ($page-1) < 1?"disabled":"";?>">
@@ -200,5 +199,6 @@ if($check) {
         </li>
     </ul>
 </nav>
+</div>
 
 <?php require(__DIR__ . "/partials/flash.php");?>

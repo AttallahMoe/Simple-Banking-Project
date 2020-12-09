@@ -161,7 +161,7 @@ if(isset($transId)){
 
     }
 
-    else if(!isset($_POST["save"])){
+    else if(!isset($_POST["save"]) && isset($_GET["page"])){
         if(isset($_SESSION["save"])) {
             $startDate = $_SESSION["dateStart"];
             $endDate = $_SESSION["dateTo"];

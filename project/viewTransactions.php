@@ -119,9 +119,9 @@ if(isset($transId)){
 */
 ?>
 <?php
-    if(isset($_POST["save"])) {
-        $db = getDB();
-        $type = $_POST["action_type"];
+if(isset($_POST["save"])) {
+    $db = getDB();
+    $type = $_POST["action_type"];
     //TODO pageination
     $resultPage = [];
 
@@ -138,7 +138,9 @@ if(isset($transId)){
     $numLinks = ceil($numRecords / $numPerPage); //gets number of links to be created
     $offset = ($page - 1) * $numPerPage;
 
-    }
+    $_SESSION["numLinks"] = $numLinks;
+
+}
 
 
     if(isset($_POST["save"])) {
@@ -183,6 +185,7 @@ if(isset($transId)){
             $startDate = $_SESSION["dateStart"];
             $endDate = $_SESSION["dateTo"];
             $type = $_SESSION["action_type"];
+            $numLinks = $_SESSION["numLinks"];
 
             $page = $_GET["page"];
             $numPerPage = 5;

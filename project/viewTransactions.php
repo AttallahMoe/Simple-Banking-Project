@@ -122,6 +122,7 @@ if(isset($transId)){
 if(isset($_POST["save"])) {
     $db = getDB();
     $type = $_POST["action_type"];
+    $_SESSION["type"] = $type;
     //TODO pageination
     $resultPage = [];
 
@@ -183,7 +184,7 @@ if(isset($_POST["save"])) {
     else if(!isset($_POST["save"]) && isset($_GET["page"])){
         if(isset($_SESSION["save"])) {
             $db = getDB();
-            $type = $_POST["action_type"];
+            $_SESSION["type"] = $type;
             //TODO pageination
             $resultPage = [];
 
@@ -204,7 +205,7 @@ if(isset($_POST["save"])) {
 
             $page = $_GET["page"];
             $numPerPage = 5;
-            
+
             $numLinks = ceil($numRecords / $numPerPage);
 
             $offset = ($page-1) * $numPerPage;

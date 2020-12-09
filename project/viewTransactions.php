@@ -50,7 +50,7 @@ $numPerPage = 5;
 $numRecords = 0;
 
 //TODO Fix this so that it returns actual account numbers in the query, not the internal id. Fixed!!!
-if(isset($transId)) {
+if(isset($transId) && isset($_POST["save"])) {
     $db = getDB();
     $type = $_POST["action_type"];
     //TODO pageination

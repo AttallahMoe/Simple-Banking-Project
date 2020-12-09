@@ -161,7 +161,7 @@ else if(!isset($_POST["save"]) && isset($_GET["page"])){
         $type = $_SESSION["action_type"];
 
         $page = $_GET["page"];
-        $numPerPage = 5;
+        $numPerPage = 2;
         $offset = ($page-1) * $numPerPage;
 
         $transId = $_SESSION["transId"];

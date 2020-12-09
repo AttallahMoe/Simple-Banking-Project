@@ -190,7 +190,7 @@ else if(!isset($_POST["save"]) && isset($_GET["page"])){
         $numRecords = $_SESSION["numRecords"];
         $numLinks = ceil($numRecords / $numPerPage);
         $offset = ($page-1) * $numPerPage;
-        
+
         $transId = $_SESSION["transId"];
 
 
@@ -249,6 +249,7 @@ else if(!isset($_POST["save"]) && isset($_GET["page"])){
             <?php endif; ?>
         </div>
     </div>
+    <?php if(isset($numLinks)):?>
     <div>
         <nav aria-label="Filtered">
             <ul class="pagination justify-content-center">
@@ -265,5 +266,6 @@ else if(!isset($_POST["save"]) && isset($_GET["page"])){
             </ul>
         </nav>
     </div>
+    <?php endif;?>
 
 <?php require(__DIR__ . "/partials/flash.php");?>

@@ -65,7 +65,7 @@ if(isset($transId)){
         </select>
         <input type="submit" name="save" value="Filter" />
     </form>
-<?php if(!isset($_POST["save"])): ?>
+<?php if(!isset($_SESSION["save"]) || isset($_POST["save"])): ?>
 <div class="bodyMain">
     <h1><strong>List Transactions</strong></h1>
     <div class="results">

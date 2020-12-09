@@ -167,8 +167,10 @@ if(isset($transId)){
             $endDate = $_SESSION["dateTo"];
             $type = $_SESSION["action_type"];
             //$save = $_SESSION["save"];
-            $offset = $_SESSION["offset"];
-            $numPerPage = $_SESSION["numPerPage"];
+
+            $page = $_GET["page"];
+            $offset = ($page-1) * $numPerPage;
+
             $transId = $_SESSION["transId"];
 
 

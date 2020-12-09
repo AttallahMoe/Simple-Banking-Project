@@ -25,19 +25,41 @@ if(isset($_GET["page"])) {
 else{
     $page = 1;
 }
+?>
 
+
+    <form method="POST">
+        <label><strong>Filter Transactions</strong></label>
+        <br>
+        <label>START:<br></label>
+        <input type="date" name="dateStart" />
+        <br>
+        <label>END:<br></label>
+        <input type="date" name="dateTo"/>
+        <label>Transaction Type: <br></label>
+        <select name="action_type">
+            <option value="deposit">Deposit</option>
+            <option value="withdraw">Withdraw</option>
+            <option value="transfer">Transfer</option>
+        </select>
+        <input type="submit" name="save" value="Filter" />
+    </form>
+
+<?php
 $numPerPage = 5;
 $numRecords = 0;
 
 //TODO Fix this so that it returns actual account numbers in the query, not the internal id. Fixed!!!
 if(isset($transId)) {
     $db = getDB();
-
+    $type = $_POST["action_type"];
     //TODO pageination
     $resultPage = [];
 
-    $stmt = $db->prepare("SELECT COUNT(*) AS total FROM Transactions WHERE act_src_id=:id");
-    $r = $stmt->execute([":id" => $transId]);
+    $stmt = $db->prepare("SELECT COUNT(*) AS total FROM Transactions WHERE act_src_id=:id AND action_type=:tType");
+    $r = $stmt->execute([":id" => $transId,
+                         ":tType" => $type
+                        ]);
     $resultPage = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($resultPage) {
         $numRecords = (int)$resultPage["total"];
@@ -63,24 +85,6 @@ if(isset($transId)){
 }
 */
 ?>
-
-
-<form method="POST">
-    <label><strong>Filter Transactions</strong></label>
-    <br>
-    <label>START:<br></label>
-    <input type="date" name="dateStart" />
-    <br>
-    <label>END:<br></label>
-    <input type="date" name="dateTo"/>
-    <label>Transaction Type: <br></label>
-    <select name="action_type">
-        <option value="deposit">Deposit</option>
-        <option value="withdraw">Withdraw</option>
-        <option value="transfer">Transfer</option>
-    </select>
-    <input type="submit" name="save" value="Filter" />
-</form>
 
 <?php
 /*

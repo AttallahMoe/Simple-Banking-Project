@@ -137,6 +137,7 @@ if(isset($transId)){
     $numRecords = (int)$numRecords;
     $numLinks = ceil($numRecords / $numPerPage); //gets number of links to be created
     $offset = ($page - 1) * $numPerPage;
+    
     }
 
 

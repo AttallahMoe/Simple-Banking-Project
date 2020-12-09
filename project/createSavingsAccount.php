@@ -1,16 +1,10 @@
 <?php require_once(__DIR__ . "/partials/nav.php"); ?>
 
-<h1><strong>Create Checking Account</strong></h1>
+<h1><strong>Open Savings Account</strong></h1>
 <form method="POST">
     <input type="number" name="balance" min="5.00" placeholder="Starting Balance"/>
     <input type="submit" name="save" value="Create"/>
 </form>
-
-<div class="list-group">
-    <div>
-        <a href="createSavingsAccount.php">Create Savings Account</a>
-        <a href="createLoanAccount.php">Create Loan</a>
-    </div>
 
 <?php
 
@@ -31,34 +25,36 @@ if(isset($_POST["save"])){
 
     $accNumRec = new SplFixedArray(1);
     $balance = $_POST["balance"];
-    $account_type = "checking";
+    $account_type = "saving";
+    $apy = 0.03;
 
     //creating and storing account number
 
-    $accNum = rand(10000000000,99999999999);
+    $accNum = rand(100000000000,999999999999);
     $accNumRec[0] = $accNum;
     $accNumFinal = $accNumRec[0];
     $accNumFinal = (int)$accNumFinal;
 
     $user = get_user_id();
     $db = getDB();
-    $stmt = $db->prepare("INSERT INTO Accounts (account_number, account_type, balance, user_id) VALUES(:account_number, :account_type, :balance, :user)");
+    $stmt = $db->prepare("INSERT INTO Accounts (account_number, account_type, balance, apy, user_id) VALUES(:account_number, :account_type, :balance, :apy, :user)");
     $r = $stmt->execute([
-            ":account_number" => $accNumFinal,
-            ":account_type" => $account_type,
-            ":balance" => $balance,
-            ":user" => $user
+        ":account_number" => $accNumFinal,
+        ":account_type" => $account_type,
+        ":balance" => $balance,
+        ":apy" => $apy,
+        ":user" => $user
     ]);
     if($r){
         flash("Created successfully with id: " . $db->lastInsertId());
     }
     else{
         $e = $stmt->errorInfo();
-        flash("Error creating new Checking Account: " . var_export($e, true));
+        flash("Error creating new Savings Account: " . var_export($e, true));
         $check = false;
     }
-?>
-<?php
+    ?>
+    <?php
     if($check){
 
         //Updating balance for world account
@@ -83,7 +79,7 @@ if(isset($_POST["save"])){
 
         $stmt = $db->prepare("UPDATE Accounts set balance=:updateWorldBalance WHERE id=:id");
         $r = $stmt->execute([
-           ":updateWorldBalance" => $updateWorldBalance,
+            ":updateWorldBalance" => $updateWorldBalance,
             ":id" => $worldID
         ]);
 
@@ -97,7 +93,7 @@ if(isset($_POST["save"])){
 
         if($check){
             $action_type = "deposit";
-            $memo = "N.A.C";
+            $memo = "N.S.A.C";
             $worldAmount = $balance * -1;
             $result = [];
 
@@ -150,14 +146,11 @@ if(isset($_POST["save"])){
                 }
             }
         }
+        header("Location: viewAccount.php");
     }
 
-    header("Location: home.php");
 
 
 }
-
 ?>
 <?php require(__DIR__ . "/partials/flash.php");?>
-
-

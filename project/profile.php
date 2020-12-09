@@ -63,9 +63,15 @@ if (isset($_POST["saved"])) {
             $newUsername = $username;
         }
     }
+
+    //First and Last Name and Privacy option
+    $first = $_POST["firstName"];
+    $last = $_POST["lastName"];
+    $private = $_POST["private"];
+
     if ($isValid) {
-        $stmt = $db->prepare("UPDATE Users set email = :email, username= :username where id = :id");
-        $r = $stmt->execute([":email" => $newEmail, ":username" => $newUsername, ":id" => get_user_id()]);
+        $stmt = $db->prepare("UPDATE Users set email = :email, username= :username, firstName=:firstName, lastName=:lastName, privacy=:privacy where id = :id");
+        $r = $stmt->execute([":email" => $newEmail, ":username" => $newUsername, ":firstName" => $first, ":lastName" => $last, ":privacy" => $private, ":id" => get_user_id()]);
         if ($r) {
             flash("Updated profile");
         }
@@ -111,6 +117,14 @@ if (isset($_POST["saved"])) {
 
     <form method="POST">
         <input type="email" name="email" placeholder="Email" value="<?php safer_echo(get_email()); ?>"/>
+        <label>Email Privacy Toggle:</label>
+        <br>
+        <select name="private">
+            <option value="public">Public</option>
+            <option value="private">Private</option>
+        </select>
+        <input type="text" name="firstName" placeholder="First Name" value="<?php safer_echo(get_first()); ?>"/>
+        <input type="text" name="lastName" placeholder="Last Name" value="<?php safer_echo(get_last()); ?>"/>
         <input type="text" maxlength="60" name="username" placeholder="Username" value="<?php safer_echo(get_username()); ?>"/>
         <!-- DO NOT PRELOAD PASSWORD-->
         <input type="password" placeholder="Password" name="password"/>

@@ -183,14 +183,28 @@ if(isset($_POST["save"])) {
     else if(!isset($_POST["save"]) && isset($_GET["page"])){
         if(isset($_SESSION["save"])) {
             $db = getDB();
+            $type = $_POST["action_type"];
+            //TODO pageination
+            $resultPage = [];
+
+            $stmt = $db->prepare("SELECT COUNT(*) AS total FROM Transactions WHERE action_type=:action_type AND act_src_id=:id");
+            $r = $stmt->execute([":id" => $transId,
+                ":action_type" => $type
+            ]);
+            $resultPage = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($resultPage) {
+                $numRecords = (int)$resultPage["total"];
+            }
+
+            $numRecords = (int)$numRecords;
+
             $startDate = $_SESSION["dateStart"];
             $endDate = $_SESSION["dateTo"];
             $type = $_SESSION["action_type"];
 
             $page = $_GET["page"];
             $numPerPage = 5;
-
-            $numRecords = $_SESSION["numRecords"];
+            
             $numLinks = ceil($numRecords / $numPerPage);
 
             $offset = ($page-1) * $numPerPage;

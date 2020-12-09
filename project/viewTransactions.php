@@ -30,26 +30,10 @@ $numPerPage = 5;
 $numRecords = 0;
 
 //TODO Fix this so that it returns actual account numbers in the query, not the internal id. Fixed!!!
-/*
-if(isset($transId)) {
-    $db = getDB();
 
-    //TODO pageination
-    $resultPage = [];
 
-    $stmt = $db->prepare("SELECT COUNT(*) AS total FROM Transactions WHERE act_src_id=:id");
-    $r = $stmt->execute([":id" => $transId]);
-    $resultPage = $stmt->fetch(PDO::FETCH_ASSOC);
-    if ($resultPage) {
-        $numRecords = (int)$resultPage["total"];
-    }
-
-    $numRecords = (int)$numRecords;
-    $numLinks = ceil($numRecords / $numPerPage); //gets number of links to be created
-    $offset = ($page - 1) * $numPerPage;
-}
-/*
 if(isset($transId)){
+    $db = getDB();
     $stmt = $db->prepare("SELECT act_src_id, Accounts.id, Accounts.account_number, amount, action_type, memo FROM Transactions JOIN Accounts on Accounts.id = Transactions.act_dest_id WHERE act_src_id =:id LIMIT 10");
     $r = $stmt->execute([":id" => $transId]);
     if ($r){
@@ -61,7 +45,7 @@ if(isset($transId)){
         $check = false;
     }
 }
-*/
+
 ?>
 
 
@@ -82,8 +66,6 @@ if(isset($transId)){
         <input type="submit" name="save" value="Filter" />
     </form>
 
-<?php
-/*
 <div class="bodyMain">
     <h1><strong>List Transactions</strong></h1>
     <div class="results">
@@ -114,8 +96,6 @@ if(isset($transId)){
             <div> No top 10 transactions listed for some reason?</div>
         <?php endif; ?>
     </div>
-*/
-?>
 <?php
 //test
 if(isset($transId) && isset($_POST["save"])) {

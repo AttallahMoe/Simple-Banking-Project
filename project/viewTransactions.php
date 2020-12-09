@@ -26,10 +26,11 @@ else{
     $page = 1;
 }
 
-$numPerPage = 2;
+$numPerPage = 5;
 $numRecords = 0;
 
 //TODO Fix this so that it returns actual account numbers in the query, not the internal id. Fixed!!!
+/*
 if(isset($transId)) {
     $db = getDB();
 
@@ -44,7 +45,7 @@ if(isset($transId)) {
     }
 
     $numRecords = (int)$numRecords;
-    $numLinks = ceil($numRecords / $numPerPage) - 1; //gets number of links to be created
+    $numLinks = ceil($numRecords / $numPerPage); //gets number of links to be created
     $offset = ($page - 1) * $numPerPage;
 }
 /*
@@ -116,6 +117,26 @@ if(isset($transId)){
 */
 ?>
 <?php
+//test
+if(isset($transId) && isset($_POST["save"])) {
+    $db = getDB();
+
+    $type = $_POST["action_type"];
+    $_SESSION["type"] = $type;
+    //TODO pageination
+    $resultPage = [];
+
+    $stmt = $db->prepare("SELECT COUNT(*) AS total FROM Transactions WHERE action_type=:type AND act_src_id=:id");
+    $r = $stmt->execute([":id" => $transId, ":type" => $type]);
+    $resultPage = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($resultPage) {
+        $numRecords = (int)$resultPage["total"];
+    }
+
+    $numRecords = (int)$numRecords;
+    $numLinks = ceil($numRecords / $numPerPage); //gets number of links to be created
+    $offset = ($page - 1) * $numPerPage;
+}
 
 if(isset($_POST["save"])) {
 
@@ -131,7 +152,7 @@ if(isset($_POST["save"])) {
 
     $_SESSION["dateStart"] = $startDate;
     $_SESSION["dateTo"] = $endDate;
-    $_SESSION["action_type"] = $type;
+    $_SESSION["type"] = $type;
     $_SESSION["save"] = $save;
 
     $stmt = $db->prepare("SELECT act_src_id, Accounts.id, Accounts.account_number, amount, action_type, memo FROM Transactions JOIN Accounts on Accounts.id = Transactions.act_src_id WHERE act_src_id =:id AND action_type=:action_type AND created BETWEEN :startDate AND :endDate LIMIT :offset, :count");
@@ -155,13 +176,14 @@ if(isset($_POST["save"])) {
 
 else if(!isset($_POST["save"]) && isset($_GET["page"])){
     if(isset($_SESSION["save"])) {
+        $db = getDB();
 
         $startDate = $_SESSION["dateStart"];
         $endDate = $_SESSION["dateTo"];
         $type = $_SESSION["action_type"];
 
         $page = $_GET["page"];
-        $numPerPage = 2;
+        $numPerPage = 5;
         $offset = ($page-1) * $numPerPage;
 
         $transId = $_SESSION["transId"];

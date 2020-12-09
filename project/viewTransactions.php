@@ -19,25 +19,21 @@ else{
     flash("Id is not set in url");
 }
 
-$page = 1;
-
 if(isset($_GET["page"])) {
-    try {
-        $page = (int)$_GET["page"];
-        $_SESSION["page"] = $page;
+    $page = (int)$_GET["page"];
     }
-    catch (Exception $e) {
-
-    }
+else{
+    $page = 1;
 }
 
+$numPerPage = 5;
+$numRecords = 0;
+
 //TODO Fix this so that it returns actual account numbers in the query, not the internal id. Fixed!!!
-if($check) {
+if(isset($transId)) {
     $db = getDB();
 
     //TODO pageination
-    $numPerPage = 5;
-    $numRecords = 0;
     $resultPage = [];
 
     $stmt = $db->prepare("SELECT COUNT(*) AS total FROM Transactions WHERE act_src_id=:id");
@@ -47,16 +43,16 @@ if($check) {
         $numRecords = (int)$resultPage["total"];
     }
 
-    $page = $_SESSION["page"];
     $numRecords = (int)$numRecords;
-    echo $numRecords;
     $numLinks = ceil($numRecords/$numPerPage); //gets number of links to be created
     $offset = ($page-1) * $numPerPage;
 
     //TODO get sessions to work for pagination
     $_SESSION["offset"] = $offset;
     $_SESSION["numPerPage"] = $numPerPage;
+    }
 
+if(isset($transId)){
     $stmt = $db->prepare("SELECT act_src_id, Accounts.id, Accounts.account_number, amount, action_type, memo FROM Transactions JOIN Accounts on Accounts.id = Transactions.act_dest_id WHERE act_src_id =:id LIMIT 10");
     $r = $stmt->execute([":id" => $transId]);
     if ($r){
@@ -90,6 +86,8 @@ if($check) {
     <input type="submit" name="save" value="Filter" />
 </form>
 
+<?php
+/*
 <div class="bodyMain">
     <h1><strong>List Transactions</strong></h1>
 
@@ -118,10 +116,11 @@ if($check) {
                 <?php endforeach; ?>
             </div>
         <?php else: ?>
-            <div style="display:none"></div>
+            <div> No top 10 transactions listed for some reason?</div>
         <?php endif; ?>
     </div>
-
+*/
+?>
 <?php
 
     if(isset($_POST["save"])) {
@@ -162,12 +161,12 @@ if($check) {
 
     }
 
-    else{
-        if(isset($_SESSION["save"]) && isset($_SESSION["dateStart"]) && isset($_SESSION["dateTo"]) && isset($_SESSION["action_type"])) {
+    else if(!isset($_POST["save"])){
+        if(isset($_SESSION["save"])) {
             $startDate = $_SESSION["dateStart"];
             $endDate = $_SESSION["dateTo"];
             $type = $_SESSION["action_type"];
-            $save = $_SESSION["save"];
+            //$save = $_SESSION["save"];
             $offset = $_SESSION["offset"];
             $numPerPage = $_SESSION["numPerPage"];
             $transId = $_SESSION["transId"];
@@ -192,40 +191,6 @@ if($check) {
 
         }
     }
-
-
-
-    /*
-    elseif(isset($_SESSION["save"]) && $_SESSION["dateStart"] && $_SESSION["dateTo"] && $_SESSION["action_type"]){
-        $startDate = ["dateStart"];
-        $endDate = $_SESSION["dateTo"];
-        $type = $_SESSION["action_type"];
-        $save = $_SESSION["save"];
-    }
-
-
-    if($check){
-
-        $stmt = $db->prepare("SELECT act_src_id, Accounts.id, Accounts.account_number, amount, action_type, memo FROM Transactions JOIN Accounts on Accounts.id = Transactions.act_src_id WHERE act_src_id =:id AND action_type=:action_type AND created BETWEEN :startDate AND :endDate LIMIT :offset, :count");
-        $stmt->bindValue(":startDate", $startDate, PDO::PARAM_STR);
-        $stmt->bindValue(":endDate", $endDate, PDO::PARAM_STR);
-        $stmt->bindValue(":action_type", $type, PDO::PARAM_STR);
-        $stmt->bindValue(":id", $transId, PDO::PARAM_INT);
-        $stmt->bindValue(":offset", $offset, PDO::PARAM_INT);
-        $stmt->bindValue(":count", $numPerPage, PDO::PARAM_INT);
-        $r = $stmt->execute();
-        if ($r){
-            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        }
-        else{
-            $e = $stmt->errorInfo();
-            flash("There was a problem fetching the results." . var_export($e, true));
-            $check = false;
-        }
-
-
-    }
-    */
 
 
 ?>

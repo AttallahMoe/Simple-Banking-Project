@@ -139,7 +139,6 @@ if(isset($_POST["save"])) {
     $offset = ($page - 1) * $numPerPage;
 
     $_SESSION["numRecords"] = $numRecords;
-    $_SESSION["numLinks"] = $numLinks;
 
 
 }
@@ -192,7 +191,7 @@ if(isset($_POST["save"])) {
             $numPerPage = 5;
 
             $numRecords = $_SESSION["numRecords"];
-            $numLinks = $_SESSION["numLinks"];
+            $numLinks = ceil($numRecords / $numPerPage);
 
             $offset = ($page-1) * $numPerPage;
 

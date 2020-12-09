@@ -21,7 +21,7 @@ else{
 
 if(isset($_GET["page"])) {
     $page = (int)$_GET["page"];
-    }
+}
 else{
     $page = 1;
 }
@@ -30,7 +30,6 @@ $numPerPage = 5;
 $numRecords = 0;
 
 //TODO Fix this so that it returns actual account numbers in the query, not the internal id. Fixed!!!
-/*
 if(isset($transId)) {
     $db = getDB();
 
@@ -48,7 +47,7 @@ if(isset($transId)) {
     $numLinks = ceil($numRecords / $numPerPage); //gets number of links to be created
     $offset = ($page - 1) * $numPerPage;
 }
-
+/*
 if(isset($transId)){
     $stmt = $db->prepare("SELECT act_src_id, Accounts.id, Accounts.account_number, amount, action_type, memo FROM Transactions JOIN Accounts on Accounts.id = Transactions.act_dest_id WHERE act_src_id =:id LIMIT 10");
     $r = $stmt->execute([":id" => $transId]);
@@ -60,34 +59,32 @@ if(isset($transId)){
         flash("There was a problem fetching the results." . var_export($e, true));
         $check = false;
     }
-
 }
 */
 ?>
 
 
-<form method="POST">
-    <label><strong>Filter Transactions</strong></label>
-    <br>
-    <label>START:<br></label>
-    <input type="date" name="dateStart" />
-    <br>
-    <label>END:<br></label>
-    <input type="date" name="dateTo"/>
-    <label>Transaction Type: <br></label>
-    <select name="action_type">
-        <option value="deposit">Deposit</option>
-        <option value="withdraw">Withdraw</option>
-        <option value="transfer">Transfer</option>
-    </select>
-    <input type="submit" name="save" value="Filter" />
-</form>
+    <form method="POST">
+        <label><strong>Filter Transactions</strong></label>
+        <br>
+        <label>START:<br></label>
+        <input type="date" name="dateStart" />
+        <br>
+        <label>END:<br></label>
+        <input type="date" name="dateTo"/>
+        <label>Transaction Type: <br></label>
+        <select name="action_type">
+            <option value="deposit">Deposit</option>
+            <option value="withdraw">Withdraw</option>
+            <option value="transfer">Transfer</option>
+        </select>
+        <input type="submit" name="save" value="Filter" />
+    </form>
 
 <?php
 /*
 <div class="bodyMain">
     <h1><strong>List Transactions</strong></h1>
-
     <div class="results">
         <?php if(count($results1) > 0 && !isset($_POST["save"])): ?>
             <div class="list-group">
@@ -119,41 +116,56 @@ if(isset($transId)){
 */
 ?>
 <?php
-    if(isset($_POST["save"])) {
-        $db = getDB();
 
-    //TODO pageination
-    $resultPage = [];
+if(isset($_POST["save"])) {
 
-    $stmt = $db->prepare("SELECT COUNT(*) AS total FROM Transactions WHERE act_src_id=:id");
-    $r = $stmt->execute([":id" => $transId]);
-    $resultPage = $stmt->fetch(PDO::FETCH_ASSOC);
-    if ($resultPage) {
-        $numRecords = (int)$resultPage["total"];
+    $startDate = $_POST["dateStart"];
+    $endDate = $_POST["dateTo"];
+    $type = $_POST["action_type"];
+    $save = $_POST["save"];
+
+    //$stmt->bindValue(":memo", $memo, PDO::PARAM_STR);
+
+    $startDate = (string)$startDate . ' 00:00:00';
+    $endDate = (string)$endDate . ' 00:00:00';
+
+    $_SESSION["dateStart"] = $startDate;
+    $_SESSION["dateTo"] = $endDate;
+    $_SESSION["action_type"] = $type;
+    $_SESSION["save"] = $save;
+
+    $stmt = $db->prepare("SELECT act_src_id, Accounts.id, Accounts.account_number, amount, action_type, memo FROM Transactions JOIN Accounts on Accounts.id = Transactions.act_src_id WHERE act_src_id =:id AND action_type=:action_type AND created BETWEEN :startDate AND :endDate LIMIT :offset, :count");
+    $stmt->bindValue(":startDate", $startDate, PDO::PARAM_STR);
+    $stmt->bindValue(":endDate", $endDate, PDO::PARAM_STR);
+    $stmt->bindValue(":action_type", $type, PDO::PARAM_STR);
+    $stmt->bindValue(":id", $transId, PDO::PARAM_INT);
+    $stmt->bindValue(":offset", $offset, PDO::PARAM_INT);
+    $stmt->bindValue(":count", $numPerPage, PDO::PARAM_INT);
+    $r = $stmt->execute();
+    if ($r){
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    else{
+        $e = $stmt->errorInfo();
+        flash("There was a problem fetching the results." . var_export($e, true));
+        $check = false;
     }
 
-    $numRecords = (int)$numRecords;
-    $numLinks = ceil($numRecords / $numPerPage); //gets number of links to be created
-    $offset = ($page - 1) * $numPerPage;
-    }
+}
 
+else if(!isset($_POST["save"]) && isset($_GET["page"])){
+    if(isset($_SESSION["save"])) {
 
-    if(isset($_POST["save"])) {
+        $startDate = $_SESSION["dateStart"];
+        $endDate = $_SESSION["dateTo"];
+        $type = $_SESSION["action_type"];
 
-        $startDate = $_POST["dateStart"];
-        $endDate = $_POST["dateTo"];
-        $type = $_POST["action_type"];
-        $save = $_POST["save"];
+        $page = $_GET["page"];
+        $numPerPage = 5;
+        $offset = ($page-1) * $numPerPage;
 
-        //$stmt->bindValue(":memo", $memo, PDO::PARAM_STR);
+        $transId = $_SESSION["transId"];
 
-        $startDate = (string)$startDate . ' 00:00:00';
-        $endDate = (string)$endDate . ' 00:00:00';
-
-        $_SESSION["dateStart"] = $startDate;
-        $_SESSION["dateTo"] = $endDate;
-        $_SESSION["action_type"] = $type;
-        $_SESSION["save"] = $save;
 
         $stmt = $db->prepare("SELECT act_src_id, Accounts.id, Accounts.account_number, amount, action_type, memo FROM Transactions JOIN Accounts on Accounts.id = Transactions.act_src_id WHERE act_src_id =:id AND action_type=:action_type AND created BETWEEN :startDate AND :endDate LIMIT :offset, :count");
         $stmt->bindValue(":startDate", $startDate, PDO::PARAM_STR);
@@ -173,40 +185,7 @@ if(isset($transId)){
         }
 
     }
-
-    else if(!isset($_POST["save"]) && isset($_GET["page"])){
-        if(isset($_SESSION["save"])) {
-
-            $startDate = $_SESSION["dateStart"];
-            $endDate = $_SESSION["dateTo"];
-            $type = $_SESSION["action_type"];
-
-            $page = $_GET["page"];
-            $numPerPage = 5;
-            $offset = ($page-1) * $numPerPage;
-
-            $transId = $_SESSION["transId"];
-
-
-            $stmt = $db->prepare("SELECT act_src_id, Accounts.id, Accounts.account_number, amount, action_type, memo FROM Transactions JOIN Accounts on Accounts.id = Transactions.act_src_id WHERE act_src_id =:id AND action_type=:action_type AND created BETWEEN :startDate AND :endDate LIMIT :offset, :count");
-            $stmt->bindValue(":startDate", $startDate, PDO::PARAM_STR);
-            $stmt->bindValue(":endDate", $endDate, PDO::PARAM_STR);
-            $stmt->bindValue(":action_type", $type, PDO::PARAM_STR);
-            $stmt->bindValue(":id", $transId, PDO::PARAM_INT);
-            $stmt->bindValue(":offset", $offset, PDO::PARAM_INT);
-            $stmt->bindValue(":count", $numPerPage, PDO::PARAM_INT);
-            $r = $stmt->execute();
-            if ($r){
-                $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            }
-            else{
-                $e = $stmt->errorInfo();
-                flash("There was a problem fetching the results." . var_export($e, true));
-                $check = false;
-            }
-
-        }
-    }
+}
 
 
 ?>
@@ -243,21 +222,21 @@ if(isset($transId)){
             <?php endif; ?>
         </div>
     </div>
-<div>
-<nav aria-label="Filtered">
-    <ul class="pagination justify-content-center">
-        <li class="page-item <?php echo ($page-1) < 1?"disabled":"";?>">
-            <a class="page-link" href="?id=<?php echo $transId;?>&page=<?php echo $page-1;?>" tabindex="-1">Previous</a>
-        </li>
-        <?php for($i = 0; $i < $numLinks; $i++):?>
-            <li class="page-item <?php echo ($page-1) == $i?"active":"";?>">
-                <a class="page-link" href="?id=<?php echo $transId;?>&page=<?php echo ($i+1);?>"><?php echo ($i+1);?></a></li>
-        <?php endfor; ?>
-        <li class="page-item <?php echo ($page+1) >= $numLinks?"disabled":"";?>">
-            <a class="page-link" href="?id=<?php echo $transId;?>&page=<?php echo $page+1;?>">Next</a>
-        </li>
-    </ul>
-</nav>
-</div>
+    <div>
+        <nav aria-label="Filtered">
+            <ul class="pagination justify-content-center">
+                <li class="page-item <?php echo ($page-1) < 1?"disabled":"";?>">
+                    <a class="page-link" href="?id=<?php echo $transId;?>&page=<?php echo $page-1;?>" tabindex="-1">Previous</a>
+                </li>
+                <?php for($i = 0; $i < $numLinks; $i++):?>
+                    <li class="page-item <?php echo ($page-1) == $i?"active":"";?>">
+                        <a class="page-link" href="?id=<?php echo $transId;?>&page=<?php echo ($i+1);?>"><?php echo ($i+1);?></a></li>
+                <?php endfor; ?>
+                <li class="page-item <?php echo ($page+1) >= $numLinks?"disabled":"";?>">
+                    <a class="page-link" href="?id=<?php echo $transId;?>&page=<?php echo $page+1;?>">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
 
 <?php require(__DIR__ . "/partials/flash.php");?>

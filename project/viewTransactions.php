@@ -65,7 +65,7 @@ if(isset($transId)){
         </select>
         <input type="submit" name="save" value="Filter" />
     </form>
-
+<?php if(!isset($_POST["save"])): ?>
 <div class="bodyMain">
     <h1><strong>List Transactions</strong></h1>
     <div class="results">
@@ -96,6 +96,7 @@ if(isset($transId)){
             <div> No top 10 transactions listed for some reason?</div>
         <?php endif; ?>
     </div>
+<?php endif; ?>
 <?php
 //test
 if(isset($transId) && isset($_POST["save"])) {

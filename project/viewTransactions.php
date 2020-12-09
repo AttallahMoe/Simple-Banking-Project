@@ -34,7 +34,7 @@ $numRecords = 0;
 
 if(isset($transId)){
     $db = getDB();
-    $stmt = $db->prepare("SELECT act_src_id, Accounts.id, Accounts.account_number, amount, action_type, memo FROM Transactions JOIN Accounts on Accounts.id = Transactions.act_dest_id WHERE act_src_id =:id LIMIT 10");
+    $stmt = $db->prepare("SELECT act_src_id, Accounts.id, Accounts.account_number, amount, action_type, memo FROM Transactions JOIN Accounts on Accounts.id = Transactions.act_dest_id WHERE act_src_id =:id ORDER BY created LIMIT 10");
     $r = $stmt->execute([":id" => $transId]);
     if ($r){
         $results1 = $stmt->fetchAll(PDO::FETCH_ASSOC);

@@ -136,6 +136,9 @@ if(isset($transId) && isset($_POST["save"])) {
     $numRecords = (int)$numRecords;
     $numLinks = ceil($numRecords / $numPerPage); //gets number of links to be created
     $offset = ($page - 1) * $numPerPage;
+
+    $_SESSION["numRecords"] = $numRecords;
+
 }
 
 if(isset($_POST["save"])) {
@@ -184,8 +187,10 @@ else if(!isset($_POST["save"]) && isset($_GET["page"])){
 
         $page = $_GET["page"];
         $numPerPage = 5;
+        $numRecords = $_SESSION["numRecords"];
+        $numLinks = ceil($numRecords / $numPerPage);
         $offset = ($page-1) * $numPerPage;
-
+        
         $transId = $_SESSION["transId"];
 
 

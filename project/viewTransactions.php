@@ -119,17 +119,14 @@ if(isset($transId)){
 */
 ?>
 <?php
-if(isset($_POST["save"])) {
-    $db = getDB();
-    $type = $_POST["action_type"];
-    $_SESSION["type"] = $type;
+    if(isset($_POST["save"])) {
+        $db = getDB();
+
     //TODO pageination
     $resultPage = [];
 
-    $stmt = $db->prepare("SELECT COUNT(*) AS total FROM Transactions WHERE action_type=:action_type AND act_src_id=:id");
-    $r = $stmt->execute([":id" => $transId,
-                         ":action_type" => $type
-                        ]);
+    $stmt = $db->prepare("SELECT COUNT(*) AS total FROM Transactions WHERE act_src_id=:id");
+    $r = $stmt->execute([":id" => $transId]);
     $resultPage = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($resultPage) {
         $numRecords = (int)$resultPage["total"];
@@ -138,11 +135,7 @@ if(isset($_POST["save"])) {
     $numRecords = (int)$numRecords;
     $numLinks = ceil($numRecords / $numPerPage); //gets number of links to be created
     $offset = ($page - 1) * $numPerPage;
-
-    $_SESSION["numRecords"] = $numRecords;
-
-
-}
+    }
 
 
     if(isset($_POST["save"])) {
@@ -183,21 +176,6 @@ if(isset($_POST["save"])) {
 
     else if(!isset($_POST["save"]) && isset($_GET["page"])){
         if(isset($_SESSION["save"])) {
-            $db = getDB();
-            $_SESSION["type"] = $type;
-            //TODO pageination
-            $resultPage = [];
-
-            $stmt = $db->prepare("SELECT COUNT(*) AS total FROM Transactions WHERE action_type=:action_type AND act_src_id=:id");
-            $r = $stmt->execute([":id" => $transId,
-                ":action_type" => $type
-            ]);
-            $resultPage = $stmt->fetch(PDO::FETCH_ASSOC);
-            if ($resultPage) {
-                $numRecords = (int)$resultPage["total"];
-            }
-
-            $numRecords = (int)$numRecords;
 
             $startDate = $_SESSION["dateStart"];
             $endDate = $_SESSION["dateTo"];
@@ -205,9 +183,6 @@ if(isset($_POST["save"])) {
 
             $page = $_GET["page"];
             $numPerPage = 5;
-
-            $numLinks = ceil($numRecords / $numPerPage);
-
             $offset = ($page-1) * $numPerPage;
 
             $transId = $_SESSION["transId"];

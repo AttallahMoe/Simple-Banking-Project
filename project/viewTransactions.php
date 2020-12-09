@@ -137,7 +137,7 @@ if(isset($transId)){
     $numRecords = (int)$numRecords;
     $numLinks = ceil($numRecords / $numPerPage); //gets number of links to be created
     $offset = ($page - 1) * $numPerPage;
-    
+
     }
 
 
@@ -179,7 +179,7 @@ if(isset($transId)){
 
     else if(!isset($_POST["save"]) && isset($_GET["page"])){
         if(isset($_SESSION["save"])) {
-
+            $db = getDB();
             $startDate = $_SESSION["dateStart"];
             $endDate = $_SESSION["dateTo"];
             $type = $_SESSION["action_type"];

@@ -39,19 +39,15 @@ if(isset($transId)) {
     $stmt = $db->prepare("SELECT COUNT(*) AS total FROM Transactions WHERE act_src_id=:id");
     $r = $stmt->execute([":id" => $transId]);
     $resultPage = $stmt->fetch(PDO::FETCH_ASSOC);
-    if($resultPage){
+    if ($resultPage) {
         $numRecords = (int)$resultPage["total"];
     }
 
     $numRecords = (int)$numRecords;
-    $numLinks = ceil($numRecords/$numPerPage); //gets number of links to be created
-    $offset = ($page-1) * $numPerPage;
-
-    //TODO get sessions to work for pagination
-    $_SESSION["offset"] = $offset;
-    $_SESSION["numPerPage"] = $numPerPage;
-    }
-
+    $numLinks = ceil($numRecords / $numPerPage); //gets number of links to be created
+    $offset = ($page - 1) * $numPerPage;
+}
+/*
 if(isset($transId)){
     $stmt = $db->prepare("SELECT act_src_id, Accounts.id, Accounts.account_number, amount, action_type, memo FROM Transactions JOIN Accounts on Accounts.id = Transactions.act_dest_id WHERE act_src_id =:id LIMIT 10");
     $r = $stmt->execute([":id" => $transId]);
@@ -65,7 +61,7 @@ if(isset($transId)){
     }
 
 }
-
+*/
 ?>
 
 
@@ -139,8 +135,6 @@ if(isset($transId)){
         $_SESSION["dateTo"] = $endDate;
         $_SESSION["action_type"] = $type;
         $_SESSION["save"] = $save;
-        //$_SESSION["offset"] = $offset;
-        //$_SESSION["numPerPage"] = $numPerPage;
 
         $stmt = $db->prepare("SELECT act_src_id, Accounts.id, Accounts.account_number, amount, action_type, memo FROM Transactions JOIN Accounts on Accounts.id = Transactions.act_src_id WHERE act_src_id =:id AND action_type=:action_type AND created BETWEEN :startDate AND :endDate LIMIT :offset, :count");
         $stmt->bindValue(":startDate", $startDate, PDO::PARAM_STR);
@@ -163,12 +157,13 @@ if(isset($transId)){
 
     else if(!isset($_POST["save"]) && isset($_GET["page"])){
         if(isset($_SESSION["save"])) {
+
             $startDate = $_SESSION["dateStart"];
             $endDate = $_SESSION["dateTo"];
             $type = $_SESSION["action_type"];
-            //$save = $_SESSION["save"];
 
             $page = $_GET["page"];
+            $numPerPage = 5;
             $offset = ($page-1) * $numPerPage;
 
             $transId = $_SESSION["transId"];

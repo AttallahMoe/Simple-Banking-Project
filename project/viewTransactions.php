@@ -26,7 +26,7 @@ else{
     $page = 1;
 }
 
-$numPerPage = 5;
+$numPerPage = 2;
 $numRecords = 0;
 
 //TODO Fix this so that it returns actual account numbers in the query, not the internal id. Fixed!!!

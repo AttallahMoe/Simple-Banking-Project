@@ -1,4 +1,5 @@
 <?php
+//this is for user to create personal transfers between their other accounts
 require_once (__DIR__ . "/partials/nav.php");
 
 if (!is_logged_in()) {

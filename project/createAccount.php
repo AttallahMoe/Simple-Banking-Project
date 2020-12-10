@@ -34,14 +34,16 @@ if(isset($_POST["save"])){
     $account_type = "checking";
 
     //creating and storing account number
-
-    $accNum = rand(10000000000,99999999999);
+    $db = getDB();
+    //$accNum = rand(10000000000,99999999999);
+    $accNum = $db->lastInsertId() + 1;
+    str_pad($accNum, 12, "0", STR_PAD_LEFT);
     $accNumRec[0] = $accNum;
     $accNumFinal = $accNumRec[0];
     $accNumFinal = (int)$accNumFinal;
 
     $user = get_user_id();
-    $db = getDB();
+
     $stmt = $db->prepare("INSERT INTO Accounts (account_number, account_type, balance, user_id) VALUES(:account_number, :account_type, :balance, :user)");
     $r = $stmt->execute([
             ":account_number" => $accNumFinal,

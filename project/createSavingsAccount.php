@@ -1,5 +1,5 @@
 <?php require_once(__DIR__ . "/partials/nav.php"); ?>
-
+//created savings account
 <h1><strong>Open Savings Account</strong></h1>
 <form method="POST">
     <input type="number" name="balance" min="5.00" placeholder="Starting Balance"/>

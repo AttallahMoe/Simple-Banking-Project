@@ -1,5 +1,6 @@
 <?php require_once(__DIR__ . "/partials/nav.php"); ?>
 <?php
+//created loan account
 $db = getDB();
 $user = get_user_id();
 $stmt = $db->prepare("SELECT account_number from Accounts WHERE user_id=:id LIMIT 10");

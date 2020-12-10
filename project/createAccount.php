@@ -36,7 +36,7 @@ if(isset($_POST["save"])){
     //creating and storing account number
     $db = getDB();
     //$accNum = rand(10000000000,99999999999);
-    $accNum = $db->lastInsertId() + 1;
+    $accNum = $db->lastInsertId();
     $accNumPadded = str_pad($accNum, 12, "0", STR_PAD_LEFT);
     $accNumRec[0] = $accNum;
     $accNumFinal = $accNumRec[0];

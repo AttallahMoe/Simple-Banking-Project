@@ -1,4 +1,5 @@
 <?php
+//pagination completed
 require_once (__DIR__ . "/partials/nav.php");
 if (!is_logged_in()) {
     //this will redirect to login and kill the rest of this script (prevent it from executing)

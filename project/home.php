@@ -12,13 +12,23 @@ if (isset($_SESSION["user"]) && isset($_SESSION["user"]["email"])) {
     <div>
         <a href="createAccount.php">Create Account</a>
         <br>
+        <br>
+        <br>
         <a href="viewAccount.php">View Accounts</a>
+        <br>
+        <br>
         <br>
         <a href="createTransaction.php">Personal Transaction</a>
         <br>
+        <br>
+        <br>
         <a href="createPersonalTransfer.php">Personal Transfer</a>
         <br>
+        <br>
+        <br>
         <a href="createExternalTransfer.php">External Transfer</a>
+        <br>
+        <br>
         <br>
         <a href="closeAccount.php">Close Account</a>
     </div>

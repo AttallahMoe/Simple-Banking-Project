@@ -164,7 +164,7 @@ else if(!isset($_POST["save"]) && isset($_GET["page"])){
 
         $startDate = $_SESSION["dateStart"];
         $endDate = $_SESSION["dateTo"];
-        $type = $_SESSION["action_type"];
+        $type = $_SESSION["type"];
 
         $page = $_GET["page"];
         $numPerPage = 5;

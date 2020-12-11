@@ -68,7 +68,7 @@ if(isset($transId)){
 <div class="bodyMain">
     <h1><strong>List Transactions</strong></h1>
     <div class="results">
-        <?php if(count($results1) > 0 && !isset($_POST["save"])): ?>
+        <?php if(count($results1) > 0): ?>
             <div class="list-group">
                 <?php foreach ($results1 as $r): ?>
                     <div class="list-group-item">

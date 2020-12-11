@@ -13,20 +13,25 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
 <form method="POST">
+        <label>Enter New Account Number</label>
 		<input name="account_number" placeholder="Account Number"/>
 		<label>Account Type</label>
+        <br>
 		<select name="account_type">
 				<option value="checking">Checking</option>
 				<option value="saving">Saving</option>
 				<option value="loan">Loan</option>
 		</select>
-        <label>Select User Email to create Account for:</label>
+        <br>
+        <label>Users email to create account for:</label>
+        <br>
         <select name="account_source" placeholder="Account Source">
             <?php foreach ($users as $user): ?>
                 <option value="<?php safer_echo($user["id"]); ?>"
                 ><?php safer_echo($user["email"]); ?></option>
         <?php endforeach; ?>
         </select>
+        <br>
 
 		<input type="number" name="balance" value="balance" placeholder="Balance"/>
 		<input type="submit" name="save" value="Create"/>

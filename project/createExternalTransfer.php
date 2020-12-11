@@ -139,10 +139,22 @@ if(isset($_POST["save"])){
     //updating dest and source balances
 
     if($check){
+        $destBalanceSum = [];
+        $stmt = $db->prepare("SELECT SUM(amount) as total from Transactions WHERE act_src_id=:id");
+        $r = $stmt->execute([":id" => $destID]);
+        $destBalanceSum = $stmt->fetch(PDO::FETCH_ASSOC);
+        $destBalFinal = $destBalanceSum["total"];
+
+        $srcBalanceSum = [];
+        $stmt = $db->prepare("SELECT SUM(amount) as total from Transactions WHERE act_src_id=:id");
+        $r = $stmt->execute([":id" => $destID]);
+        $srcBalanceSum = $stmt->fetch(PDO::FETCH_ASSOC);
+        $srcBalFinal = $srcBalanceSum["total"];
+
         //dest
         $stmt = $db->prepare("UPDATE Accounts set balance=:destUpdate WHERE id=:id");
         $r = $stmt->execute([
-            ":destUpdate" => $destExpect,
+            ":destUpdate" => $destBalFinal,
             ":id" => $destID
         ]);
 
@@ -155,7 +167,7 @@ if(isset($_POST["save"])){
         //source
         $stmt = $db->prepare("UPDATE Accounts set balance=:srcUpdate WHERE id=:id");
         $r = $stmt->execute([
-            ":srcUpdate" => $srcExpect,
+            ":srcUpdate" => $srcBalFinal,
             ":id" => $srcID
         ]);
 

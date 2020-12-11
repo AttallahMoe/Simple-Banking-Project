@@ -147,7 +147,7 @@ if(isset($_POST["save"])){
 
         $srcBalanceSum = [];
         $stmt = $db->prepare("SELECT SUM(amount) as total from Transactions WHERE act_src_id=:id");
-        $r = $stmt->execute([":id" => $destID]);
+        $r = $stmt->execute([":id" => $srcID]);
         $srcBalanceSum = $stmt->fetch(PDO::FETCH_ASSOC);
         $srcBalFinal = $srcBalanceSum["total"];
 

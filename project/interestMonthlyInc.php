@@ -6,7 +6,7 @@ $db = getDB();
 $type1 = "loan";
 $type2 = "saving";
 $closed = 'true';
-$stmt = $db->prepare("SELECT account_number from Accounts WHERE account_type=:type1 OR account_type=:type2 AND apy != NULL AND closed!=closed LIMIT 10");
+$stmt = $db->prepare("SELECT account_number from Accounts WHERE account_type=:type1 OR account_type=:type2 AND closed!=closed LIMIT 10");
 $r = $stmt->execute([":type1" => $type1,
                      ":type2" => $type2,
                      ":closed" => $closed

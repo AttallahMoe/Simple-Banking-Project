@@ -1,5 +1,6 @@
 <?php require_once(__DIR__ . "/partials/nav.php"); ?>
 <?php
+//added close account
 $db = getDB();
 $user = get_user_id();
 $closedCheck = "true";

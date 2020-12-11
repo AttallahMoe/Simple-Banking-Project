@@ -14,6 +14,7 @@ if (isset($_SESSION["user"]) && isset($_SESSION["user"]["email"])) {
         <a href="viewAccount.php">View Accounts</a>
         <a href="createTransaction.php">Personal Transaction</a>
         <a href="createPersonalTransfer.php">Personal Transfer</a>
+        <a href="createExternalTransfer.php">External Transfer</a>
     </div>
 </div>
 

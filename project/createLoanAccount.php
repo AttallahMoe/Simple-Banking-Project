@@ -21,6 +21,12 @@ $accs = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <input type="submit" name="save" value="Create"/>
 </form>
 
+<div class="list-group">
+    <div>
+        <a href="createAccount.php">Create Checking Account</a>
+        <a href="createSavingsAccount.php">Create Savings Account</a>
+    </div>
+
 <?php
 
 if (!is_logged_in()) {

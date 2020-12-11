@@ -146,10 +146,22 @@ if(isset($_POST["save"])){
     //updating world and source balances
 
     if($check){
+        $worldBalanceSum = [];
+        $stmt = $db->prepare("SELECT SUM(amount) as total from Transactions WHERE act_src_id=:id");
+        $r = $stmt->execute([":id" => $worldID]);
+        $worldBalanceSum = $stmt->fetch(PDO::FETCH_ASSOC);
+        $worldBalFinal = $worldBalanceSum["total"];
+
+        $srcBalanceSum = [];
+        $stmt = $db->prepare("SELECT SUM(amount) as total from Transactions WHERE act_src_id=:id");
+        $r = $stmt->execute([":id" => $srcID]);
+        $srcBalanceSum = $stmt->fetch(PDO::FETCH_ASSOC);
+        $srcBalFinal = $srcBalanceSum["total"];
+
         //world
         $stmt = $db->prepare("UPDATE Accounts set balance=:worldUpdate WHERE id=:id");
         $r = $stmt->execute([
-            ":worldUpdate" => $worldExpect,
+            ":worldUpdate" => $worldBalFinal,
             ":id" => $worldID
         ]);
 
@@ -162,7 +174,7 @@ if(isset($_POST["save"])){
         //source
         $stmt = $db->prepare("UPDATE Accounts set balance=:srcUpdate WHERE id=:id");
         $r = $stmt->execute([
-            ":srcUpdate" => $srcExpect,
+            ":srcUpdate" => $srcBalFinal,
             ":id" => $srcID
         ]);
 

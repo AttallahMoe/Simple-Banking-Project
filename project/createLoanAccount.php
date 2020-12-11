@@ -205,8 +205,8 @@ if(isset($_POST["save"])){
             if($check) {
                 $stmt = $db->prepare("INSERT INTO Transactions (act_src_id, act_dest_id, action_type, amount, memo, expected_total) VALUES(:src, :dest, :type, :amount,:memo, :expected)");
                 $r = $stmt->execute([
-                    ":src" => $sourceID,
-                    ":dest" => $srcIDExternal,
+                    ":src" => $srcIDExternal,
+                    ":dest" => $sourceID,
                     ":type" => $action_type,
                     ":amount" => $balance,
                     ":memo" => $memoLoan,

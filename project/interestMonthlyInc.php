@@ -84,6 +84,9 @@ if(isset($_POST["save"]) && $check == true){
             $check = false;
         }
     }
+    if($check){
+        flash("interest has been applied");
+    }
 }
 
 

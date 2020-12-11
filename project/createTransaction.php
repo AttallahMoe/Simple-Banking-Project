@@ -8,8 +8,9 @@ if (!is_logged_in()) {
 }
 $db = getDB();
 $user = get_user_id();
-$stmt = $db->prepare("SELECT account_number from Accounts WHERE user_id=:id LIMIT 10");
-$r = $stmt->execute([":id" => $user]);
+$closedCheck = 'true';
+$stmt = $db->prepare("SELECT account_number from Accounts WHERE user_id=:id  AND closed !=:closed LIMIT 10");
+$r = $stmt->execute([":id" => $user, "closed" => $closedCheck]);
 $accs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 

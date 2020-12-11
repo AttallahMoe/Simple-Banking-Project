@@ -35,10 +35,7 @@ if(isset($_POST["save"])){
 
     //creating and storing account number
     $db = getDB();
-    //$accNum = rand(10000000000,99999999999);
-    $accNum = $db->lastInsertId();
-    $accNumPadded = str_pad($accNum, 12, "0", STR_PAD_LEFT);
-    $accNumRec[0] = $accNum;
+    $accNum = rand(10000000000,99999999999);
     $accNumFinal = $accNumRec[0];
     $accNumFinal = (int)$accNumFinal;
 
@@ -46,7 +43,7 @@ if(isset($_POST["save"])){
 
     $stmt = $db->prepare("INSERT INTO Accounts (account_number, account_type, balance, user_id) VALUES(:account_number, :account_type, :balance, :user)");
     $r = $stmt->execute([
-            ":account_number" => $accNumPadded,
+            ":account_number" => $accNumFinal,
             ":account_type" => $account_type,
             ":balance" => $balance,
             ":user" => $user

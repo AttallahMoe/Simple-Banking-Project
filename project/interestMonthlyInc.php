@@ -5,9 +5,11 @@ $check = true;
 $db = getDB();
 $type1 = "loan";
 $type2 = "saving";
-$stmt = $db->prepare("SELECT account_number from Accounts WHERE account_type=:type1 OR account_type=:type2 LIMIT 10");
+$closed = 'true';
+$stmt = $db->prepare("SELECT account_number from Accounts WHERE account_type=:type1 OR account_type=:type2 AND closed !=:closed LIMIT 10");
 $r = $stmt->execute([":type1" => $type1,
-                     ":type2" => $type2
+                     ":type2" => $type2,
+                     ":closed" => $closed
                     ]);
 $accs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -81,6 +83,9 @@ if(isset($_POST["save"]) && $check == true){
             flash("Failed to update loan balance to include interest: " . var_export($e, true));
             $check = false;
         }
+    }
+    if($check){
+        flash("interest has been applied");
     }
 }
 

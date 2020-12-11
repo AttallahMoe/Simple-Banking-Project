@@ -65,11 +65,10 @@ if(isset($transId)){
         </select>
         <input type="submit" name="save" value="Filter" />
     </form>
-<?php if(!isset($_SESSION["save"]) || !isset($_POST["save"])): ?>
 <div class="bodyMain">
     <h1><strong>List Transactions</strong></h1>
     <div class="results">
-        <?php if(count($results1) > 0 && !isset($_POST["save"])): ?>
+        <?php if(count($results1) > 0): ?>
             <div class="list-group">
                 <?php foreach ($results1 as $r): ?>
                     <div class="list-group-item">
@@ -96,7 +95,6 @@ if(isset($transId)){
             <div> No top 10 transactions listed for some reason?</div>
         <?php endif; ?>
     </div>
-<?php endif; ?>
 <?php
 //test
 if(isset($transId) && isset($_POST["save"])) {
@@ -164,7 +162,7 @@ else if(!isset($_POST["save"]) && isset($_GET["page"])){
 
         $startDate = $_SESSION["dateStart"];
         $endDate = $_SESSION["dateTo"];
-        $type = $_SESSION["action_type"];
+        $type = $_SESSION["type"];
 
         $page = $_GET["page"];
         $numPerPage = 5;

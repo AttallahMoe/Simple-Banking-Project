@@ -26,6 +26,9 @@ if (isset($_SESSION["user"]) && isset($_SESSION["user"]["email"])) {
         <br>
         <br>
         <a href="closeAccount.php">Close Account</a>
+        <br>
+        <br>
+        <a href="interestMonthlyInc.php">Interest Nuke</a>
     </div>
 </div>
 

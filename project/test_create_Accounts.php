@@ -5,6 +5,10 @@ if(!has_role("Admin")){
 	flash("You don't have permission to access this page");
 	die(header("Location: login.php"));
 }
+$db = getDB();
+$stmt = $db->prepare("SELECT id, email from Users");
+$r = $stmt->execute();
+$users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 
@@ -16,6 +20,14 @@ if(!has_role("Admin")){
 				<option value="saving">Saving</option>
 				<option value="loan">Loan</option>
 		</select>
+        <label>Select User Email to create Account for:</label>
+        <select name="account_source" placeholder="Account Source">
+            <?php foreach ($users as $user): ?>
+                <option value="<?php safer_echo($user["id"]); ?>"
+                ><?php safer_echo($user["email"]); ?></option>
+        <?php endforeach; ?>
+        </select>
+
 		<input type="number" name="balance" value="balance" placeholder="Balance"/>
 		<input type="submit" name="save" value="Create"/>
 </form>
@@ -25,7 +37,8 @@ if(isset($_POST["save"])){
 	$account_number = $_POST["account_number"];
 	$account_type = $_POST["account_type"];
 	$balance = $_POST["balance"];
-	$user = get_user_id();
+
+	$user = $_POST["account_source"];
 	$db = getDB();
 	$stmt = $db->prepare("INSERT INTO Accounts (account_number, account_type, balance, user_id) VALUES(:account_number, :account_type, :balance, :user)");
 	$r = $stmt->execute([

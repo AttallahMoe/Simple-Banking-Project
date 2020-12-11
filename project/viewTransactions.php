@@ -67,6 +67,7 @@ if(isset($transId)){
     </form>
 <?php if(!isset($_SESSION["save"]) || !isset($_POST["save"]) || !isset($_GET["page"])): ?>
 <div class="bodyMain">
+    <?php if(!isset($_SESSION["save"]) || !isset($_POST["save"]) || !isset($_GET["page"])): ?>
     <h1><strong>List Transactions</strong></h1>
     <div class="results">
         <?php if(count($results1) > 0 && !isset($_POST["save"])): ?>
@@ -95,6 +96,7 @@ if(isset($transId)){
         <?php else: ?>
             <div> No top 10 transactions listed for some reason?</div>
         <?php endif; ?>
+    <?php endif; ?>
     </div>
 <?php endif; ?>
 <?php

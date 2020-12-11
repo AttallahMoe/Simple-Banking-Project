@@ -81,18 +81,6 @@ if(isset($_POST["save"])){
 
         $updateWorldBalance = $worldBalance - $balance;
 
-        $stmt = $db->prepare("UPDATE Accounts set balance=:updateWorldBalance WHERE id=:id");
-        $r = $stmt->execute([
-           ":updateWorldBalance" => $updateWorldBalance,
-            ":id" => $worldID
-        ]);
-
-        if(!$r){
-            $e = $stmt->errorInfo();
-            flash("Error updating World balance: " . var_export($e, true));
-            $check = false;
-        }
-
         //creating transaction between new account and world account
 
         if($check){
@@ -149,10 +137,31 @@ if(isset($_POST["save"])){
                     $check = false;
                 }
             }
+
+            if($check){
+                $worldBalanceSum = [];
+                $stmt = $db->prepare("SELECT SUM(amount) as total from Transactions WHERE act_src_id=:id");
+                $r = $stmt->execute([":id" => $worldID]);
+                $worldBalanceSum = $stmt->fetch(PDO::FETCH_ASSOC);
+                $worldBalFinal = $worldBalanceSum["total"];
+
+                //world
+                $stmt = $db->prepare("UPDATE Accounts set balance=:updateWorldBalance WHERE id=:id");
+                $r = $stmt->execute([
+                    ":updateWorldBalance" => $worldBalFinal,
+                    ":id" => $worldID
+                ]);
+
+                if(!$r){
+                    $e = $stmt->errorInfo();
+                    flash("Error updating World balance: " . var_export($e, true));
+                    $check = false;
+                }
+            }
         }
     }
 
-    header("Location: home.php");
+    header("Location: viewAccount.php");
 
 
 }
